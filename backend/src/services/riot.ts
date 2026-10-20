@@ -9,6 +9,7 @@ import {
   PlayerProfile,
   Position,
 } from "../types";
+import { hasMatch, getStoredMatch, saveMatch, deriveMatchRecord } from "./matchStore";
 
 const PLATFORM = "na1";
 const REGION = "americas";
@@ -46,7 +47,7 @@ class RateLimiter {
 
 const rateLimiter = new RateLimiter();
 
-async function riotFetch<T>(url: string): Promise<T> {
+async function riotFetch<T>(url: string, retries = 4): Promise<T> {
   await rateLimiter.wait();
   try {
     const res = await axios.get<T>(url, {
@@ -55,7 +56,13 @@ async function riotFetch<T>(url: string): Promise<T> {
     return res.data;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
-      throw new Error(`Riot API ${err.response.status}: ${JSON.stringify(err.response.data)}`);
+      const status = err.response.status;
+      if (status === 429 && retries > 0) {
+        const retryAfter = Number(err.response.headers["retry-after"] ?? 10);
+        await new Promise((r) => setTimeout(r, retryAfter * 1000 + 250));
+        return riotFetch<T>(url, retries - 1);
+      }
+      throw new Error(`Riot API ${status}: ${JSON.stringify(err.response.data)}`);
     }
     throw err;
   }
@@ -176,29 +183,19 @@ async function fetchMatchRecords(puuid: string, matchIds: string[]): Promise<Mat
   for (const id of matchIds) {
     let match: Match;
     try {
-      match = await getMatch(id);
+      // Use cached raw match if available, otherwise fetch and cache
+      const cached = getStoredMatch(id);
+      if (cached) {
+        match = cached;
+      } else {
+        match = await getMatch(id);
+        saveMatch(match);
+      }
     } catch {
       continue;
     }
-    const p = match.info.participants.find((p) => p.puuid === puuid);
-    if (!p) continue;
-    const duration = match.info.gameDuration;
-    const cs = (p.totalMinionsKilled ?? 0) + (p.neutralMinionsKilled ?? 0);
-    records.push({
-      matchId: match.metadata.matchId,
-      championName: p.championName,
-      win: p.win,
-      kda: { kills: p.kills, deaths: p.deaths, assists: p.assists },
-      role: p.teamPosition || (p.lane !== "NONE" ? p.lane : "") || "",
-      gameDate: match.info.gameStartTimestamp,
-      gameDuration: duration,
-      cs,
-      csPerMin: duration > 0 ? Math.round((cs / duration) * 60 * 10) / 10 : 0,
-      damage: p.totalDamageDealtToChampions ?? 0,
-      gold: p.goldEarned ?? 0,
-      visionScore: p.visionScore ?? 0,
-      queueId: match.info.queueId ?? 0,
-    });
+    const record = deriveMatchRecord(match, puuid);
+    if (record) records.push(record);
   }
   return records;
 }

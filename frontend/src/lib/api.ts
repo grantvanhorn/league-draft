@@ -79,6 +79,22 @@ export const undoDraft = (id: string) =>
 export const deleteDraft = (id: string) =>
   apiFetch<{ success: boolean }>(`/drafts/${id}`, { method: "DELETE" });
 
+// Match history
+export interface WeekSummary {
+  id: string;
+  weekNumber: number;
+  label?: string;
+  seriesCount: number;
+  fetchedCount: number;
+  totalGames: number;
+}
+export const getMatchWeeks = () => apiFetch<WeekSummary[]>("/match-history/weeks");
+export const getMatchWeek = (weekId: string) => apiFetch<any>(`/match-history/weeks/${weekId}`);
+export const createMatchWeek = (payload: { weekNumber: number; label?: string; series: any[] }) =>
+  apiFetch<any>("/match-history/weeks", { method: "POST", body: JSON.stringify(payload) });
+export const fetchWeekData = (weekId: string) =>
+  apiFetch<any>(`/match-history/weeks/${weekId}/fetch`, { method: "POST" });
+
 // Champions
 export const getChampions = () => apiFetch<ChampionData[]>("/champions");
 export const getDDVersion = () =>
@@ -110,4 +126,30 @@ export const refreshTournament = () =>
 export const deepImportTournament = () =>
   apiFetch<{ message: string; status: ImportStatus }>("/tournament/import/deep", {
     method: "POST",
+  });
+
+// Refetch
+export interface RefetchStatus {
+  running: boolean;
+  phase: "idle" | "fetching" | "rederiving" | "done" | "stopped" | "error";
+  totalMatchIds: number;
+  alreadyCached: number;
+  cachedOnDisk: number;
+  fetchedCount: number;
+  failedCount: number;
+  rederivingPlayer: string | null;
+  currentMatchId: string | null;
+  errors: { matchId: string; error: string }[];
+  startedAt: string | null;
+  finishedAt: string | null;
+}
+export const getRefetchStatus = () => apiFetch<RefetchStatus>("/refetch/status");
+export const startRefetch = () =>
+  apiFetch<{ started: boolean; status: RefetchStatus }>("/refetch/start", { method: "POST" });
+export const stopRefetch = () =>
+  apiFetch<{ stopping: boolean }>("/refetch/stop", { method: "POST" });
+export const importExternalData = (puuid: string, payload: unknown) =>
+  apiFetch<{ source: string; matched: number; totalGames: number }>(`/players/${puuid}/import`, {
+    method: "POST",
+    body: JSON.stringify(payload),
   });

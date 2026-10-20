@@ -5,8 +5,11 @@ import TeamPage from "./pages/Team";
 import DraftPage from "./pages/Draft";
 import Tournament from "./pages/Tournament";
 import WriteUp from "./pages/WriteUp";
+import WriteUps from "./pages/WriteUps";
 import Teams from "./pages/Teams";
 import TeamDetail from "./pages/TeamDetail";
+import MatchHistory from "./pages/MatchHistory";
+import Settings from "./pages/Settings";
 
 export default function App() {
   return (
@@ -20,7 +23,9 @@ export default function App() {
             { to: "/teams", label: "Teams" },
             { to: "/tournament", label: "Tournament" },
             { to: "/draft", label: "Draft" },
-            { to: "/write-ups/1", label: "Write-Ups" },
+            { to: "/matches", label: "Matches" },
+            { to: "/write-ups", label: "Write-Ups" },
+            { to: "/settings", label: "Settings" },
           ].map(({ to, label }) => (
             <NavLink
               key={to}
@@ -52,6 +57,9 @@ export default function App() {
             <Route path="/tournament" element={<Tournament />} />
             <Route path="/draft" element={<DraftPage />} />
             <Route path="/draft/:id" element={<DraftPage />} />
+            <Route path="/matches" element={<MatchHistory />} />
+            <Route path="/write-ups" element={<WriteUps />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/write-ups/:week" element={<WriteUp />} />
           </Routes>
         </main>

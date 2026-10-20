@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { AppData, PlayerProfile, Team, DraftState, TournamentTeam } from "../types";
+import { AppData, PlayerProfile, Team, DraftState, TournamentTeam, MatchWeek } from "../types";
 
 const DATA_FILE = path.join(__dirname, "../../data/profiles.json");
 
@@ -13,6 +13,7 @@ const defaultData: AppData = {
   tournamentTeams: [],
   players: [],
   drafts: [],
+  matchWeeks: [],
 };
 
 export function readData(): AppData {
@@ -23,6 +24,7 @@ export function readData(): AppData {
   const raw = fs.readFileSync(DATA_FILE, "utf-8");
   const data = JSON.parse(raw) as AppData;
   if (!data.tournamentTeams) data.tournamentTeams = [];
+  if (!data.matchWeeks) data.matchWeeks = [];
   // migration: backfill accumulated history fields on existing profiles
   for (const p of data.players) {
     if (!p.matchHistory) p.matchHistory = p.recentMatches ?? [];
@@ -126,4 +128,23 @@ export function findPlayerByRiotId(riotId: string): PlayerProfile | undefined {
   return readData().players.find(
     (p) => p.riotId.toLowerCase() === riotId.toLowerCase()
   );
+}
+
+export function getMatchWeeks(): MatchWeek[] {
+  return readData().matchWeeks;
+}
+
+export function getMatchWeek(id: string): MatchWeek | undefined {
+  return readData().matchWeeks.find((w) => w.id === id);
+}
+
+export function upsertMatchWeek(week: MatchWeek): void {
+  const data = readData();
+  const idx = data.matchWeeks.findIndex((w) => w.id === week.id);
+  if (idx >= 0) {
+    data.matchWeeks[idx] = week;
+  } else {
+    data.matchWeeks.push(week);
+  }
+  writeData(data);
 }

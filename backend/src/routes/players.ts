@@ -84,52 +84,89 @@ router.patch("/:puuid", (req: Request, res: Response) => {
   return res.json(existing);
 });
 
-// POST /api/players/:puuid/lp-history — enrich match records with LP data from Mobalytics
-// Body: the full Mobalytics GraphQL response OR just { items: [...] }
-router.post("/:puuid/lp-history", (req: Request, res: Response) => {
+// POST /api/players/:puuid/import — enrich match records from an external data file.
+// Accepts Mobalytics GraphQL responses or op.gg exports (auto-detected).
+// All formats share the numeric gameId which maps to our matchId via "NA1_{gameId}".
+router.post("/:puuid/import", (req: Request, res: Response) => {
   const existing = getPlayer(req.params.puuid);
   if (!existing) return res.status(404).json({ error: "Player not found" });
 
-  // Accept either the raw full response or just the items array
-  let items: { gameId: number; lp: { lpDiff: number; after: { value: number } } }[];
-  try {
-    const body = req.body as Record<string, unknown>;
-    const raw = (
-      (body?.data as Record<string, unknown>)?.lol as Record<string, unknown>
-    )?.player as Record<string, unknown>;
-    const lpHistory = (raw?.lpHistory ?? body?.lpHistory ?? body) as Record<string, unknown>;
-    items = (lpHistory?.items ?? body?.items) as typeof items;
-    if (!Array.isArray(items)) throw new Error("no items array found");
-  } catch {
-    return res.status(400).json({ error: "Could not parse LP history items from body" });
-  }
-
-  // Build a lookup: numeric gameId -> { lpDiff, lpAfter }
-  const lpMap = new Map<string, { lpDiff: number; lpAfter: number }>();
-  for (const item of items) {
-    lpMap.set(String(item.gameId), {
-      lpDiff: item.lp.lpDiff,
-      lpAfter: item.lp.after.value,
+  const body = req.body as Record<string, unknown>;
+  const result = parseExternalData(body);
+  if (!result) {
+    return res.status(400).json({
+      error: "Unrecognized format. Expected Mobalytics GraphQL response or op.gg export.",
     });
   }
 
   let matched = 0;
   for (const m of existing.matchHistory) {
-    // matchId format: "NA1_5656008835" — extract numeric suffix
     const numericId = m.matchId.split("_").pop()!;
-    const lp = lpMap.get(numericId);
-    if (lp) {
-      m.lpDiff = lp.lpDiff;
-      m.lpAfter = lp.lpAfter;
-      matched++;
+    const ext = result.get(numericId);
+    if (!ext) continue;
+    if (ext.lpDiff !== undefined) m.lpDiff = ext.lpDiff;
+    if (ext.lpAfter !== undefined) m.lpAfter = ext.lpAfter;
+    matched++;
+  }
+
+  existing.recentMatches = existing.matchHistory.slice(0, 20);
+  upsertPlayer(existing);
+  return res.json({ source: result.source, matched, totalGames: result.size });
+});
+
+
+interface ExtEnrichedGame {
+  lpDiff?: number;
+  lpAfter?: number;
+}
+
+interface ParsedExternal extends Map<string, ExtEnrichedGame> {
+  source: string;
+}
+
+function parseExternalData(body: Record<string, unknown>): ParsedExternal | null {
+  // ── Mobalytics: full GraphQL response or extracted lpHistory ──
+  const mobaPlayer = (
+    (body?.data as Record<string, unknown>)?.lol as Record<string, unknown>
+  )?.player as Record<string, unknown> | undefined;
+
+  const lpHistory = (
+    mobaPlayer?.lpHistory ?? body?.lpHistory ?? body
+  ) as Record<string, unknown> | undefined;
+
+  const items = lpHistory?.items ?? body?.items;
+  if (Array.isArray(items) && items.length > 0 && "gameId" in (items[0] as object)) {
+    const map = new Map() as ParsedExternal;
+    map.source = "mobalytics";
+    for (const item of items as { gameId: number; lp?: { lpDiff: number; after: { value: number } } }[]) {
+      const entry: ExtEnrichedGame = {};
+      if (item.lp) {
+        entry.lpDiff = item.lp.lpDiff;
+        entry.lpAfter = item.lp.after.value;
+      }
+      map.set(String(item.gameId), entry);
+    }
+    return map;
+  }
+
+  // ── op.gg: array of game objects with game_id or gameId ──
+  const games = body?.data ?? body?.games ?? body;
+  if (Array.isArray(games) && games.length > 0) {
+    const first = games[0] as Record<string, unknown>;
+    const idField = "game_id" in first ? "game_id" : "gameId" in first ? "gameId" : null;
+    if (idField) {
+      const map = new Map() as ParsedExternal;
+      map.source = "opgg";
+      for (const g of games as Record<string, unknown>[]) {
+        const rawId = String(g[idField]).replace(/^[A-Z0-9]+_/i, "");
+        map.set(rawId, {});
+      }
+      return map;
     }
   }
-  // Keep recentMatches in sync
-  existing.recentMatches = existing.matchHistory.slice(0, 20);
 
-  upsertPlayer(existing);
-  return res.json({ matched, total: items.length });
-});
+  return null;
+}
 
 // DELETE /api/players/:puuid
 router.delete("/:puuid", (req: Request, res: Response) => {

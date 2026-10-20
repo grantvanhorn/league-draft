@@ -190,6 +190,20 @@ export interface TournamentTeam {
   roster: TournamentRosterEntry[];
 }
 
+export interface RefetchStatus {
+  running: boolean;
+  phase: "idle" | "fetching" | "rederiving" | "done" | "stopped" | "error";
+  totalMatchIds: number;
+  alreadyCached: number;
+  fetchedCount: number;
+  failedCount: number;
+  rederivingPlayer: string | null;
+  currentMatchId: string | null;
+  errors: { matchId: string; error: string }[];
+  startedAt: string | null;
+  finishedAt: string | null;
+}
+
 export interface ImportStatus {
   running: boolean;
   total: number;
@@ -200,11 +214,33 @@ export interface ImportStatus {
   finishedAt: string | null;
 }
 
+export interface SeriesGame {
+  gameNumber: number;
+  matchId: string;
+  data?: Match;
+  fetchedAt?: string;
+}
+
+export interface MatchSeries {
+  id: string;
+  teamAId: string;
+  teamBId: string;
+  games: SeriesGame[];
+}
+
+export interface MatchWeek {
+  id: string;
+  weekNumber: number;
+  label?: string;
+  series: MatchSeries[];
+}
+
 export interface AppData {
   ourTeam: Team;
   tournamentTeams: TournamentTeam[];
   players: PlayerProfile[];
   drafts: DraftState[];
+  matchWeeks: MatchWeek[];
 }
 
 export interface ChampionData {

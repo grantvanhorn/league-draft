@@ -268,6 +268,7 @@ interface DraftSimProps {
   title: string;
   ctSide: "Blue" | "Red";
   scenario: string;
+  opponentName?: string;
   // 6 bans in pick order: [Blue1, Red1, Blue2, Red2, Blue3, Red3]
   p1Bans: string[];
   // 6 picks in pick order: [B1, R1, R2, B2, B3, R3]
@@ -279,7 +280,7 @@ interface DraftSimProps {
   notes: string[];
 }
 
-function DraftSim({ title, ctSide, scenario, p1Bans, p1Picks, p2Bans, p2Picks, notes }: DraftSimProps) {
+function DraftSim({ title, ctSide, scenario, opponentName = "HeyYouGuys!", p1Bans, p1Picks, p2Bans, p2Picks, notes }: DraftSimProps) {
   const ctIsBlue = ctSide === "Blue";
   // which team acts at each step
   // p1Bans: positions 0,2,4 = Blue; 1,3,5 = Red
@@ -387,7 +388,7 @@ function DraftSim({ title, ctSide, scenario, p1Bans, p1Picks, p2Bans, p2Picks, n
           const c = teamColor(team);
           return (
             <div key={team}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: c, marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.5px" }}>{team === "CT" ? "Collision Time" : "HeyYouGuys!"}</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: c, marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.5px" }}>{team === "CT" ? "Collision Time" : opponentName}</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {allPicks.map((p, i) => (
                   <span key={i} style={{ fontSize: 12, padding: "2px 8px", borderRadius: 4, background: "#1e293b", color: "#cbd5e1" }}>
@@ -1100,12 +1101,561 @@ function Week1() {
   );
 }
 
+// ─── Week 2 Data ──────────────────────────────────────────────────────────────
+
+const UNC_PLAYERS: PlayerEntry[] = [
+  {
+    name: "Kyojinnn",
+    role: "TOP",
+    tier: "EMERALD",
+    rank: "II",
+    lp: 95,
+    games: 54,
+    wr: 46.3,
+    kda: 2.44,
+    avgDmg: 26009,
+    avgCs: 222.2,
+    playstyle:
+      "Jungle main playing top lane for the tournament — 54 ranked top games vs 200+ jungle games. His Jayce, which he dominates on in jungle, has a terrible 25% WR in the top lane. MonkeyKing (71.4% WR) and Pantheon (55.6%) are more reliable top options. Raw Emerald II mechanics translate even off-role, but his champion pool is thin and untested in a 1v1 laning environment.",
+    threats: [
+      "Emerald II — highest elo on UNC; raw mechanics are dangerous even off-role",
+      "MonkeyKing (7g, 71.4% WR) — most reliable top pick; strong skirmish and split-push threat",
+      "Pantheon (9g, 55.6%) — poke + all-in pressure, ult can roam mid to assist DarrowTheReaper",
+    ],
+    weaknesses: [
+      "Jungle main off-role — only 54 ranked top games; limited matchup experience in lane",
+      "Jayce top (12g, 25% WR) — his most-played top pick is failing at a significant rate",
+      "Camille (4g, 25%) and Ornn (3g, 0%) show poor results on meta picks",
+      "46.3% WR overall at top — losing record in his tournament role",
+    ],
+    champs: [
+      { name: "Jayce", games: 12, wr: 25.0, kda: 2.49, avgDmg: 25963, avgCs: 244.5, note: "Frequent pick — terrible WR in top lane" },
+      { name: "Pantheon", games: 9, wr: 55.6, kda: 2.58, avgDmg: 29834, avgCs: 224.6, note: "Poke + roam threat" },
+      { name: "MonkeyKing", games: 7, wr: 71.4, kda: 2.39, avgDmg: 26562, avgCs: 200.9, note: "Best top lane pick" },
+      { name: "Lissandra", games: 5, wr: 40.0, kda: 2.32, avgDmg: 29132, avgCs: 269.6 },
+      { name: "Camille", games: 4, wr: 25.0, kda: 2.3, avgDmg: 17656, avgCs: 172.0 },
+      { name: "Ornn", games: 3, wr: 0.0, kda: 2.36, avgDmg: 28631, avgCs: 221.7, note: "0% WR — do not expect this" },
+      { name: "Chogath", games: 2, wr: 100.0, kda: 3.0, avgDmg: 31325, avgCs: 217.5 },
+      { name: "Quinn", games: 2, wr: 100.0, kda: 2.47, avgDmg: 32329, avgCs: 218.5 },
+    ],
+  },
+  {
+    name: "RedSyven",
+    role: "JGL",
+    tier: "GOLD",
+    rank: "IV",
+    lp: 30,
+    games: 206,
+    wr: 48.1,
+    kda: 3.3,
+    avgDmg: 21515,
+    avgCs: 196.4,
+    playstyle:
+      "XinZhao one-trick who has spent 108 games on his primary pick — and sits below 50% WR on it. Kindred is his actual best pick at 57.1% WR and should be respected. Shyvana at 50% WR is a secondary option. Sylas (33.3% WR across 24 games) is a recurring misplay that never works. Gold IV is the lowest elo on UNC and faces Oxymoronical — the biggest jungle elo gap CT will see this season.",
+    threats: [
+      "Kindred (28g, 57.1% WR) — his best pick; lane invade and scaling threat, pairs well with Lux CC",
+      "Diana (6g, 66.7%) — small-sample pocket; strong diver with CC synergy",
+      "Pantheon (5g, 60%) — roaming gank pressure, possible cheese into top/mid",
+    ],
+    weaknesses: [
+      "Gold IV vs Oxymoronical (Emerald III) — 2+ division elo gap in jungle",
+      "XinZhao (108g, 47.2% WR) — primary pick with a losing record after 108 games",
+      "Sylas (24g, 33.3%) — frequently plays it, never succeeds; likely to reach for it under pressure",
+      "Overall 48.1% WR across 206 games — losing record as a jungler",
+    ],
+    champs: [
+      { name: "XinZhao", games: 108, wr: 47.2, kda: 3.12, avgDmg: 20639, avgCs: 189.1, note: "Primary — below 50% WR" },
+      { name: "Shyvana", games: 32, wr: 50.0, kda: 3.94, avgDmg: 25047, avgCs: 217.6 },
+      { name: "Kindred", games: 28, wr: 57.1, kda: 4.51, avgDmg: 25727, avgCs: 209.8, note: "Best pick — ban priority" },
+      { name: "Sylas", games: 24, wr: 33.3, kda: 2.51, avgDmg: 16396, avgCs: 180.0, note: "Frequent attempt, bad results" },
+      { name: "Diana", games: 6, wr: 66.7, kda: 2.96, avgDmg: 15763, avgCs: 198.0 },
+      { name: "Pantheon", games: 5, wr: 60.0, kda: 3.27, avgDmg: 25780, avgCs: 207.6 },
+      { name: "MonkeyKing", games: 3, wr: 33.3, kda: 3.35, avgDmg: 21395, avgCs: 213.7 },
+    ],
+  },
+  {
+    name: "DarrowTheReaper",
+    role: "MID",
+    tier: "GOLD",
+    rank: "III",
+    lp: 15,
+    games: 132,
+    wr: 48.5,
+    kda: 2.01,
+    avgDmg: 32396,
+    avgCs: 194.2,
+    playstyle:
+      "Lux is his entire identity — 45 games at 64.4% WR is dominant, and without it there is no reliable fallback. Viktor (48.1% on 27 games), LeBlanc (42.9%), and Malzahar (40%) are all below average. Locke at 55.6% (9 games) is his only viable alternative. Banning Lux in Phase 1 fundamentally breaks his champion select — he becomes a mid laner with no picks above 50% WR.",
+    threats: [
+      "Lux (45g, 64.4% WR) — the single most important ban in this matchup; root + ult enables FPSakulF's Ashe slow combos for long-range picks",
+      "Locke (9g, 55.6%) — viable fallback; high damage output (35k avg), can punish overextension",
+      "High average damage (32,396) — consistently punishes poor positioning from distance",
+    ],
+    weaknesses: [
+      "Without Lux: entire pool falls below 50% WR — Viktor (48.1%), LeBlanc (42.9%), Malzahar (40%), Katarina (28.6%)",
+      "Gold III vs Hive (Gold I) — elo disadvantage in the mid lane",
+      "KDA 2.01 — lowest on UNC, dies reaching for Lux Q roots more than he lands them",
+      "Katarina (7g, 28.6%) and TwistedFate (2g, 0%) are dangerous fallback attempts under pressure",
+    ],
+    champs: [
+      { name: "Lux", games: 45, wr: 64.4, kda: 2.8, avgDmg: 34576, avgCs: 218.3, note: "PRIORITY BAN — his entire identity" },
+      { name: "Viktor", games: 27, wr: 48.1, kda: 1.93, avgDmg: 36069, avgCs: 197.4, note: "High volume, below 50%" },
+      { name: "Leblanc", games: 14, wr: 42.9, kda: 1.78, avgDmg: 30796, avgCs: 162.7 },
+      { name: "Malzahar", games: 10, wr: 40.0, kda: 1.23, avgDmg: 26895, avgCs: 224.6 },
+      { name: "Locke", games: 9, wr: 55.6, kda: 2.28, avgDmg: 35057, avgCs: 183.8, note: "Only viable fallback" },
+      { name: "Katarina", games: 7, wr: 28.6, kda: 1.62, avgDmg: 28975, avgCs: 155.3, note: "Bad WR — exploitable" },
+      { name: "Veigar", games: 4, wr: 25.0, kda: 1.67, avgDmg: 32801, avgCs: 195.5 },
+      { name: "Briar", games: 4, wr: 50.0, kda: 1.95, avgDmg: 38324, avgCs: 130.5 },
+    ],
+  },
+  {
+    name: "FPSakulF",
+    role: "BOT",
+    tier: "EMERALD",
+    rank: "IV",
+    lp: 78,
+    games: 231,
+    wr: 50.2,
+    kda: 2.78,
+    avgDmg: 28738,
+    avgCs: 221.5,
+    playstyle:
+      "Two-headed primary of Ashe (92g, 50% WR) and Vayne (67g, 55.2% WR) — Vayne is clearly his stronger pick, Ashe is the comfort fallback. The captain of UNC and the most dangerous player in this matchup at Emerald IV facing Silver I. His bot lane with SayLemons has a 75% WR when playing together in flex (9W 3L) — treat this bot lane as a coordinated unit, not two random solo queue players.",
+    threats: [
+      "Vayne (67g, 55.2% WR) — his best pick; scales into an unkillable side-lane threat late",
+      "Emerald IV vs Nekter (Silver I) — largest elo gap in this matchup, 3 divisions",
+      "FPSakulF + SayLemons in team play: 75% WR (9W 3L) — coordinated bot lane, not solo queue individuals",
+      "Caitlyn (23g) pairs naturally with Lux mid for a long-range poke-lock composition",
+    ],
+    weaknesses: [
+      "Ashe (92g, 50% WR) — high-volume comfort pick but only 50%; below expectation for Emerald IV",
+      "Kaisa (29g, 48.3%), Caitlyn (47.8%), Yunara (42.9%) — all remaining picks are below 50% WR",
+      "Lower average damage (28,738) than typical for an Emerald IV ADC — passive, positioning-focused playstyle",
+      "If both Vayne and Ashe are banned, his entire remaining pool is below 50% WR",
+    ],
+    champs: [
+      { name: "Ashe", games: 92, wr: 50.0, kda: 2.94, avgDmg: 25775, avgCs: 212.6, note: "Volume primary — only 50% WR" },
+      { name: "Vayne", games: 67, wr: 55.2, kda: 2.9, avgDmg: 29184, avgCs: 220.9, note: "Best pick — priority ban" },
+      { name: "Kaisa", games: 29, wr: 48.3, kda: 2.98, avgDmg: 32174, avgCs: 225.7 },
+      { name: "Caitlyn", games: 23, wr: 47.8, kda: 2.52, avgDmg: 35986, avgCs: 257.6, note: "Pairs with Lux mid for poke lock" },
+      { name: "Yunara", games: 7, wr: 42.9, kda: 2.35, avgDmg: 35877, avgCs: 257.1 },
+      { name: "Draven", games: 3, wr: 33.3, kda: 1.59, avgDmg: 26625, avgCs: 189.0 },
+      { name: "Jinx", games: 2, wr: 50.0, kda: 3.75, avgDmg: 21945, avgCs: 240.5 },
+    ],
+  },
+  {
+    name: "SayLemons",
+    role: "SUP",
+    tier: "GOLD",
+    rank: "III",
+    lp: 18,
+    games: 18,
+    wr: 50,
+    kda: 3.97,
+    avgDmg: 10500,
+    avgCs: 28,
+    playstyle:
+      "18 solo-ranked support games at 50% WR (9W 9L) — verified via Mobalytics. KDA 3.97, KP 63%, vision score 73.2/game (Vision Focused badge). Primary pick is Braum (7g, 57% WR) — Ashe passive + Braum passive creates a permastun chain. Also plays Rell, Seraphine, and is experimenting with Mel (new champion). Appears to be primarily a jungler playing support for the team. Mobalytics shows 75% WR (9W 3L) when playing with FPSakulF and 77.8% with DarrowTheReaper — in coordinated team play, he's a different player. Also Platinum IV 69LP in flex (125 games, 51.2% WR) — more experienced than his Gold III solo rank suggests.",
+    threats: [
+      "Braum (7g, 57.1% WR) — primary pick; Ashe slow → Braum passive chain creates free CC perma-lock",
+      "Seraphine (2g, 50%) and Lulu (1g, 100%) — enchanters that double FPSakulF's late-game scaling",
+      "Rell (2g, 50%) — engage tank with reliable all-in; works with Ashe root setup",
+      "Team coordination: 75% WR with FPSakulF in flex — bot lane plays as a unit, not two randoms",
+    ],
+    weaknesses: [
+      "Only 18 solo queue ranked support games — thin sample; small champion pool depth",
+      "Possibly off-role (jungle main playing support) — 86 jungle games at 64% WR is his real role",
+      "All 5 known supports have ≤7 games — any novel matchup puts him in unexplored territory",
+      "Seraphine (2g) and Lulu (1g) are tiny samples; champion depth is unproven beyond Braum",
+    ],
+    champs: [
+      { name: "Braum", games: 7, wr: 57.1, kda: 4.9, avgDmg: 10224, avgCs: 27.5, note: "Primary pick — Ashe passive synergy" },
+      { name: "Rell", games: 2, wr: 50.0, kda: 4.69, avgDmg: 7948, avgCs: 35.0 },
+      { name: "Seraphine", games: 2, wr: 50.0, kda: 7.33, avgDmg: 11175, avgCs: 26.5 },
+      { name: "Lulu", games: 1, wr: 100.0, kda: 6.0, avgDmg: 7844, avgCs: 22.0, note: "1g sample only" },
+      { name: "Mel", games: 1, wr: 100.0, kda: 5.0, avgDmg: 8000, avgCs: 20.0, note: "New champion, experimenting" },
+    ],
+  },
+];
+
+const UNC_OPGG = "https://op.gg/lol/multisearch/na?summoners=Kyojinnn%23NA1%2CRedSyven%23NA1%2CDarrowTheReaper%23red%2CFPSakulF%23NA1%2CSayLemons%23NA1";
+
+// ─── Week 2 Write-Up Component ─────────────────────────────────────────────────
+
+function Week2() {
+  return (
+    <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+      {/* Header */}
+      <div style={{ marginBottom: 28 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+          <span style={{ fontSize: 13, color: "#64748b", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Week 2 — Lugia Division</span>
+        </div>
+        <h1 style={{ fontSize: 32, fontWeight: 800, color: "#f1f5f9", margin: 0, letterSpacing: "-0.5px" }}>
+          Collision Time <span style={{ color: "#3b82f6" }}>vs.</span> Ahrin's Uncles
+        </h1>
+        <p style={{ color: "#64748b", marginTop: 8, marginBottom: 14, fontSize: 15 }}>Scouting report, ban priorities, and draft simulations</p>
+        <div style={{ display: "flex", gap: 10 }}>
+          <OpggLink href={CT_OPGG} label="Collision Time" />
+          <OpggLink href={UNC_OPGG} label="Ahrin's Uncles" />
+        </div>
+      </div>
+
+      {/* TL;DR */}
+      <div style={{ ...S.section, background: "#162032", borderColor: "#1e3a5f" }}>
+        <div style={S.sectionTitle}>TL;DR — Key Takeaways</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#60a5fa", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>UNC Threat Tier</div>
+            {[
+              { name: "FPSakulF (BOT)", tier: "S", reason: "Emer IV, 231 games, Vayne/Ashe — largest elo gap this season" },
+              { name: "Kyojinnn (TOP)", tier: "A", reason: "Emer II raw skill, but jungle main with 46% WR at top" },
+              { name: "DarrowTheReaper (MID)", tier: "B", reason: "Gold III, but Lux at 64.4% WR is a game-defining pick if unbanned" },
+              { name: "SayLemons (SUP)", tier: "C", reason: "Gold III, 50% solo ranked support WR but 75% WR with FPSakulF in team play" },
+              { name: "RedSyven (JGL)", tier: "D", reason: "Gold IV, 48% WR on primary — Oxy dominates this matchup" },
+            ].map((t) => (
+              <div key={t.name} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 8 }}>
+                <span style={{ fontSize: 14, fontWeight: 800, color: t.tier === "S" ? "#f87171" : t.tier === "A" ? "#fb923c" : t.tier === "B" ? "#fbbf24" : t.tier === "C" ? "#94a3b8" : "#64748b", width: 18, flexShrink: 0 }}>{t.tier}</span>
+                <div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#cbd5e1" }}>{t.name}</span>
+                  <span style={{ fontSize: 12, color: "#64748b" }}> — {t.reason}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#34d399", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>CT Advantages to Play To</div>
+            {[
+              "Ban Lux: DarrowTheReaper has zero picks above 50% WR without his signature",
+              "Oxymoronical (Emerald III) vs RedSyven (Gold IV) — biggest jungle elo gap CT has faced",
+              "Kyojinnn is a jungle main at top — 46.3% WR in his tournament role",
+              "Hive (Gold I) outranks Darrow (Gold III) and can freely counterpick his weak fallbacks",
+              "Ransom's Malphite (70% WR) teamfight anchor is still available if unbanned",
+              "Nekter's Twitch (78.6%) hidden pocket stays uncountered unless scouted",
+            ].map((a, i) => (
+              <div key={i} style={S.bullet}>• {a}</div>
+            ))}
+          </div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#f87171", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>CT Risk Factors</div>
+            {[
+              "FPSakulF (Emerald IV) vs Nekter (Silver I) — 3-division elo gap at bot, CT's biggest exposure",
+              "FPSakulF + SayLemons have 75% WR playing together — this bot lane coordinates well",
+              "Kyojinnn's Emerald II mechanics still show up even off-role; don't give him carry picks",
+              "Vayne late game with Seraphine/Lulu scaling is a teamfight landmine if the game runs long",
+              "SayLemons is currently on a 7W 3L hot streak at support",
+            ].map((a, i) => (
+              <div key={i} style={S.bullet}>• {a}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* UNC Scouting */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Ahrin's Uncles — Player Profiles</div>
+        {UNC_PLAYERS.map((p) => (
+          <PlayerCard key={p.name} p={p} highlight={p.name === "FPSakulF" || p.name === "DarrowTheReaper"} />
+        ))}
+      </div>
+
+      {/* CT Profiles */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Collision Time — Player Profiles</div>
+        {CT_PLAYERS.map((p) => (
+          <PlayerCard key={p.name} p={p} />
+        ))}
+      </div>
+
+      {/* Ban Priorities */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Ban Priority Guide</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+          <div>
+            <div style={S.h3}>CT's Bans vs UNC</div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#7f1d1d", color: "#fca5a5", border: "1px solid #ef444444" }}>1. Lux</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>DarrowTheReaper's 45g 64.4% WR identity pick — removes it and his entire pool is below 50% WR. Always ban this first.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#7f1d1d", color: "#fca5a5", border: "1px solid #ef444444" }}>2. Vayne</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>FPSakulF's best pick at 67g 55.2% WR. Forces him to Ashe (50%) or worse.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#7f1d1d", color: "#fca5a5", border: "1px solid #ef444444" }}>3. Kindred</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>RedSyven's best jungle pick (28g, 57.1% WR) — denying it forces him onto his losing-record XinZhao primary.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#78350f", color: "#fde68a", border: "1px solid #f59e0b44" }}>4. Ashe</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>FPSakulF's volume pick — if both Vayne AND Ashe are banned, all his remaining ADCs are below 50% WR.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#78350f", color: "#fde68a", border: "1px solid #f59e0b44" }}>5. Braum</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>SayLemons' primary support (7g, 57% WR) — banning it eliminates the Ashe passive + Braum passive permastun chain and forces him onto his ≤2 game picks.</span>
+            </div>
+          </div>
+
+          <div>
+            <div style={S.h3}>UNC's Likely Bans vs CT</div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Expected: Nocturne</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Oxymoronical's 80% WR will be scouted — they must remove it</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Expected: Viktor</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Hive's 56% WR signature on 80 games</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Expected: Malphite</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Ransom's 70% WR teamfight anchor hard-counters UNC's poke composition</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Possible: Twitch</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>If they scout Nekter's 78.6% WR pocket pick</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Possible: Shyvana</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Oxy's 68.8% WR pick that also denies RedSyven's secondary option</span>
+            </div>
+            <div style={{ marginTop: 12, padding: "10px 14px", background: "#0f172a", borderRadius: 8, border: "1px solid #334155" }}>
+              <span style={{ fontSize: 13, color: "#fbbf24" }}>💡 Strategic Note:</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}> If UNC bans Nocturne + Viktor + Malphite, CT pivots to: Shyvana (Oxy 68.8%) + Syndra or Veigar (Hive 57-59%) + Olaf/Sion (Ransom 75%). UNC has likely not prepared for these and the power level stays high.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Playstyle Analysis */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Playstyle & Matchup Analysis</div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 20 }}>
+          <div>
+            <div style={S.h3}>UNC Tendencies</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Long-range poke composition:</b> Lux mid + Ashe bot creates a root-and-slow lockdown from range — Ashe W slows targets that Lux Q then roots, setting up a free ult. This is their primary identity if Lux isn't banned.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Enchanter bot lane scaling:</b> SayLemons on Seraphine/Lulu buffs FPSakulF's Vayne/Ashe into an unkillable lategame carry. They play together at 75% WR — this bot lane is coordinated.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Off-role top and support:</b> Both Kyojinnn and SayLemons appear to be jungle mains playing out of position. Their lane performance should trail their raw elo.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Their win condition:</b> Get Lux ahead → Ashe + Lux poke combo disables CT → FPSakulF scales on Vayne/Ashe + Seraphine to carry teamfights</div>
+          </div>
+          <div>
+            <div style={S.h3}>CT's Win Condition</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Ban Lux, always:</b> Without Lux, DarrowTheReaper's pool is entirely below 50% WR. His fallback (Locke, Viktor, LeBlanc) is manageable for Hive. This one ban neutralizes UNC's entire mid lane strategy.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Let Oxy run the map:</b> RedSyven is Gold IV with a losing-record primary. Oxymoronical can invade, steal camps, and snowball bot to negate FPSakulF's elo advantage early.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Pressure bot early:</b> Camp FPSakulF before he scales — if Nekter can get even or ahead, the Twitch pocket becomes a late-game monster UNC hasn't prepared for.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Don't give Kyojinnn MonkeyKing:</b> His 71.4% WR top pick thrives in skirmishes. Force him onto Jayce (25% WR) or Lissandra (40%) where he's ineffective.</div>
+          </div>
+        </div>
+
+        <div style={{ padding: "14px 18px", background: "#0f172a", borderRadius: 8, border: "1px solid #334155" }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", marginBottom: 8 }}>Strongest vs. Weakest — UNC Assessment</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div>
+              <div style={{ fontSize: 12, color: "#f87171", fontWeight: 700, marginBottom: 4, textTransform: "uppercase" }}>Strongest: FPSakulF (BOT)</div>
+              <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Emerald IV with 231 bot games. His Vayne (55.2%) and Ashe (50%) provide consistent scaling. The 3-division gap vs Nekter (Silver I) is the biggest raw elo advantage UNC has in any lane. His coordination with SayLemons at 75% WR makes this bot lane a genuine unit, not just two players.</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 12, color: "#4ade80", fontWeight: 700, marginBottom: 4, textTransform: "uppercase" }}>Weakest: RedSyven (JGL)</div>
+              <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Gold IV with a 48.1% WR across 206 games — a losing record despite massive play volume. XinZhao, his primary at 108 games, sits at 47.2% WR. Sylas is a 33.3% WR trap he keeps reaching for. Facing Oxymoronical (Emerald III, 80% Nocturne WR), this is CT's easiest lane to exploit.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Draft Simulations */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Draft Simulations</div>
+        <p style={{ fontSize: 14, color: "#64748b", marginBottom: 20 }}>
+          Three scenarios covering different side assignments and priority adjustments. The Lux ban is non-negotiable in all scenarios — everything else adapts around it.
+        </p>
+
+        <DraftSim
+          title="Scenario A — CT Blue Side (Standard)"
+          ctSide="Blue"
+          opponentName="Ahrin's Uncles"
+          scenario="Blue side lets CT grab Shyvana at B1, removing it from RedSyven while giving Oxy his 68.8% WR pick. Bans target Lux (Darrow's identity), Vayne (FPSakulF's best), and Kindred (RedSyven's only reliable pick)."
+          p1Bans={[
+            "Lux",        // CT Blue1: DarrowTheReaper's 64.4% identity — must ban, always
+            "Nocturne",   // UNC Red1: Oxy's 80% WR, expected
+            "Vayne",      // CT Blue2: FPSakulF's best pick at 55.2% WR
+            "Viktor",     // UNC Red2: Hive's signature
+            "Kindred",    // CT Blue3: RedSyven's 57.1% WR best pick
+            "Malphite",   // UNC Red3: Ransom's 70% WR
+          ]}
+          p1Picks={[
+            { champ: "Shyvana", role: "JGL" },     // CT B1: Oxy 68.8% WR, denies RedSyven's secondary option
+            { champ: "MonkeyKing", role: "TOP" },  // UNC R1: Kyojinnn's 71.4% WR top pick
+            { champ: "Ashe", role: "BOT" },        // UNC R2: FPSakulF — Vayne banned, falls to volume pick
+            { champ: "Syndra", role: "MID" },      // CT B2: Hive 57.4% — dominates Darrow's weak fallbacks
+            { champ: "Olaf", role: "TOP" },        // CT B3: Ransom 75% — Olaf ult counters MonkeyKing suppression
+            { champ: "XinZhao", role: "JGL" },     // UNC R3: RedSyven — forced to losing-record primary
+          ]}
+          p2Bans={[
+            "Twitch",     // UNC Red1: deny Nekter's pocket if scouted
+            "Braum",      // CT Blue1: SayLemons' primary pick (7g, 57%); eliminates Ashe+Braum passive chain
+            "Nasus",      // UNC Red2: deny Oxy's 73.7% scaling jungle (Nocturne already banned)
+            "Diana",      // CT Blue2: deny RedSyven's 66.7% WR pocket remaining option
+          ]}
+          p2Picks={[
+            { champ: "Locke", role: "MID" },       // UNC R4: Darrow's only viable fallback at 55.6% WR
+            { champ: "Kaisa", role: "BOT" },       // CT B4: Nekter — Twitch banned, Kaisa 51.6% WR
+            { champ: "Sona", role: "SUP" },        // CT B5: Hond 66.7% WR — ult chains with Syndra for wombo
+            { champ: "Seraphine", role: "SUP" },   // UNC R5: SayLemons — Braum banned, falls to Seraphine (2g, 50%)
+          ]}
+          notes={[
+            "Shyvana B1 does double duty: gives Oxy his 68.8% WR pick AND removes RedSyven's best secondary option in one move.",
+            "Lux ban (CT Blue1) is the keystone of the draft — without it, DarrowTheReaper's pool collapses entirely below 50% WR.",
+            "With Vayne + Kindred banned, FPSakulF falls to Ashe (50%) and RedSyven falls to XinZhao (47.2%) — both below their peak performance.",
+            "Olaf (Ransom 75% WR) specifically counters MonkeyKing: Ragnarok CC-immunity negates Wuju Style suppression, letting Ransom fight through MonkeyKing's passive.",
+            "Syndra (Hive 57.4%) dominates Darrow's fallback pool — Syndra E roots and ult combo punishes Locke's immobility.",
+            "Sona ult (Crescendo) + Syndra ult combo is the teamfight closer — stun the whole team, then delete the carry.",
+            "Braum ban removes SayLemons' primary pick (7g, 57%) and eliminates the Ashe passive + Braum passive permastun chain. He falls to Seraphine (2g, 50%) — a step down from his comfort pick.",
+            "Win condition: Shyvana secures 2 dragon stacks before 20 minutes, Syndra bullies Locke off waves, Kaisa/Sona close teamfights.",
+          ]}
+        />
+
+        <DraftSim
+          title="Scenario B — CT Red Side"
+          ctSide="Red"
+          opponentName="Ahrin's Uncles"
+          scenario="Red side counter-pick advantage. CT must pre-ban Lux to prevent Darrow from taking it at B1 — they'd grab it immediately given first pick. CT then uses R1-R2 to lock Shyvana and Syndra after seeing UNC's opening move."
+          p1Bans={[
+            "Nocturne",   // UNC Blue1: Oxy's 80% WR — expected first ban
+            "Lux",        // CT Red1: must ban even on red side — UNC takes it B1 if available
+            "Malphite",   // UNC Blue2: Ransom's 70% WR
+            "Vayne",      // CT Red2: FPSakulF's best pick
+            "Viktor",     // UNC Blue3: Hive's signature
+            "Kindred",    // CT Red3: RedSyven's 57.1% best pick
+          ]}
+          p1Picks={[
+            { champ: "MonkeyKing", role: "TOP" },  // UNC B1: Kyojinnn grabs 71.4% WR pick (Lux/Viktor/Nocturne banned)
+            { champ: "Shyvana", role: "JGL" },     // CT R1: Oxy 68.8% — counter-pick advantage, grab immediately
+            { champ: "Syndra", role: "MID" },      // CT R2: Hive 57.4% — sees Darrow has no Lux, locks carry mid
+            { champ: "XinZhao", role: "JGL" },     // UNC B2: RedSyven — Kindred banned, forced to primary
+            { champ: "Ashe", role: "BOT" },        // UNC B3: FPSakulF — Vayne banned, falls to volume pick
+            { champ: "Olaf", role: "TOP" },        // CT R3: Ransom 75% WR — counter into MonkeyKing
+          ]}
+          p2Bans={[
+            "Braum",      // CT Red1: remove SayLemons' primary pick (7g, 57%); kills Ashe+Braum chain
+            "Twitch",     // UNC Blue1: deny Nekter's pocket
+            "Seraphine",  // CT Red2: remove SayLemons' enchanter option (2g, 50%)
+            "Kaisa",      // UNC Blue2: deny Nekter's most-played ADC fallback
+          ]}
+          p2Picks={[
+            { champ: "Tristana", role: "BOT" },    // CT R4: Nekter — Twitch/Kaisa banned, Tristana 50% WR
+            { champ: "Locke", role: "MID" },       // UNC B4: Darrow — 55.6% WR, only viable fallback after Lux ban
+            { champ: "Lulu", role: "SUP" },        // UNC B5: SayLemons — Braum+Seraphine banned, Lulu (1g, 100%)
+            { champ: "Sona", role: "SUP" },        // CT R5: Hond 66.7% — ult into Syndra wombo, shields Tristana
+          ]}
+          notes={[
+            "Lux must be banned on red side even though it costs CT a ban slot — giving DarrowTheReaper his 64.4% WR identity at B1 is unacceptable.",
+            "Red side counter-pick advantage: CT sees MonkeyKing at B1 and locks Shyvana + Syndra at R1-R2. Perfect position — Syndra knows Darrow has no Lux.",
+            "Olaf at R3 is the counter-pick payoff: after seeing MonkeyKing (B1), CT picks Olaf — Ragnarok CC-immunity negates MonkeyKing's suppression passive, letting Ransom fight freely through his kit.",
+            "Braum + Seraphine bans (CT Phase 2) strip SayLemons' two primary options. He falls to Lulu (1 game, 100% WR) — tiny sample, unknown performance in competitive play.",
+            "UNC banning Kaisa forces Nekter to Tristana (50% WR) — a step down from Twitch or Kaisa, but Tristana scales into the Syndra + Sona CC comp.",
+            "Sona ult + Syndra E → Ult is a reliable wombo combo that UNC's comp (MonkeyKing, Locke, Lulu) has no clean answer to.",
+            "Win condition: Syndra snowballs Locke in mid, Shyvana dragon control, Tristana/Sona outscale Ashe/Lulu in lategame.",
+          ]}
+        />
+
+        <DraftSim
+          title="Scenario C — Blue Side, Lux Unbanned (Veigar Counter-Pick)"
+          ctSide="Blue"
+          opponentName="Ahrin's Uncles"
+          scenario="CT deliberately leaves Lux open. UNC takes it at R1 for Darrow. CT answers with Veigar — Veigar E cage traps the immobile Lux and one-shots her at 2 items. Uses the saved Lux ban on Sylas to prevent RedSyven from attempting his 33% WR pick and freeing up a ban slot for additional pressure."
+          p1Bans={[
+            "Vayne",      // CT Blue1: FPSakulF's best pick — still priority even without Lux ban
+            "Nocturne",   // UNC Red1: Oxy's 80% WR, expected
+            "Kindred",    // CT Blue2: RedSyven's 57.1% best pick
+            "Viktor",     // UNC Red2: Hive's signature
+            "Sylas",      // CT Blue3: deny RedSyven's recurring misplay (33% WR) + any jungle flex attempt
+            "Malphite",   // UNC Red3: Ransom's 70% WR
+          ]}
+          p1Picks={[
+            { champ: "Shyvana", role: "JGL" },     // CT B1: Oxy 68.8% — before UNC can deny it
+            { champ: "Lux", role: "MID" },         // UNC R1: DarrowTheReaper takes his identity (not banned)
+            { champ: "MonkeyKing", role: "TOP" },  // UNC R2: Kyojinnn's 71.4% best pick
+            { champ: "Veigar", role: "MID" },      // CT B2: Hive 59.4% — counter to Lux; E cage traps immobile Lux
+            { champ: "Olaf", role: "TOP" },        // CT B3: Ransom 75% — counter MonkeyKing suppression
+            { champ: "XinZhao", role: "JGL" },     // UNC R3: RedSyven — Kindred/Sylas banned, forced to primary
+          ]}
+          p2Bans={[
+            "Twitch",     // UNC Red1: deny Nekter's pocket
+            "Braum",      // CT Blue1: SayLemons' primary pick (7g, 57%); eliminates Ashe+Braum chain
+            "Nasus",      // UNC Red2: deny Oxy's 73.7% scaling jungle
+            "Seraphine",  // CT Blue2: SayLemons' enchanter option (2g, 50%)
+          ]}
+          p2Picks={[
+            { champ: "Ashe", role: "BOT" },        // UNC R4: FPSakulF — Vayne banned, falls to Ashe
+            { champ: "Kaisa", role: "BOT" },       // CT B4: Nekter — Twitch banned, Kaisa 51.6% WR
+            { champ: "Sona", role: "SUP" },        // CT B5: Hond 66.7% — ult into Veigar cage for wombo
+            { champ: "Rell", role: "SUP" },        // UNC R5: SayLemons — Braum+Seraphine banned, Rell (2g, 50%)
+          ]}
+          notes={[
+            "Deliberately leaving Lux open is a calculated trade: CT uses that ban on Sylas (stops RedSyven's 33% WR trap pick) and gains the Veigar counter-pick instead.",
+            "Veigar E cage is the answer to Lux: Lux is immobile and squishy. Veigar E → AA → Q → R deletes her at 2 items. She can't dodge Veigar E at close range.",
+            "Shyvana B1 before UNC can take it — RedSyven's Shyvana is only 50% WR vs Oxy's 68.8%, so CT wins this trade even as a race.",
+            "Olaf (Ransom 75% WR) counter-picks MonkeyKing at B3: Ragnarok lets Olaf fight through MonkeyKing's suppression passive, turning his best tool off.",
+            "Braum + Seraphine bans strip SayLemons' two primary supports. He falls to Rell (2g, 50%) — shifts UNC from scaling to engage, but Rell's limited games means uncertain execution.",
+            "Sona ult (Crescendo) + Veigar E cage + Veigar R is a reliable pick-off combo that executes Lux or Ashe at any range.",
+            "Key risk: if Darrow lands Lux ult through Veigar positioning, he can still burst. Hive needs to cage her before she can poke freely.",
+            "Win condition: Veigar snowballs Lux in mid lane, Shyvana takes dragon control, Kaisa/Sona outscale Ashe/Rell in 5v5 teamfights.",
+          ]}
+        />
+      </div>
+
+      {/* Summary */}
+      <div style={{ ...S.section, background: "#111827", borderColor: "#1e3a5f" }}>
+        <div style={S.sectionTitle}>Final Recommendations</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
+          {[
+            {
+              label: "Must-Ban",
+              color: "#ef4444",
+              items: [
+                "Lux — DarrowTheReaper's 45g 64.4% WR identity; removes it and his pool is entirely below 50%",
+                "Vayne — FPSakulF's 55.2% WR best pick; force him to 50% Ashe",
+              ],
+            },
+            {
+              label: "Strong-Ban",
+              color: "#f59e0b",
+              items: [
+                "Kindred (RedSyven's 57.1% WR best — forces him to XinZhao losing record)",
+                "Braum (SayLemons' primary at 7g, 57%; banning it + Seraphine leaves him on ≤2 game picks)",
+                "Ashe (ban both Vayne + Ashe to break FPSakulF entirely)",
+              ],
+            },
+            {
+              label: "CT Priority Picks",
+              color: "#22c55e",
+              items: [
+                "Shyvana (Oxy 68.8%) — grab B1 every blue-side game",
+                "Nocturne (Oxy 80%) — if unbanned, pick immediately",
+                "Olaf (Ransom 75%) — hard counters MonkeyKing suppression via Ragnarok",
+                "Twitch (Nekter 78.6%) — hide until Phase 2, it's likely not banned",
+                "Syndra (Hive 57.4%) — dominant into Darrow's weak fallback pool",
+              ],
+            },
+          ].map((col) => (
+            <div key={col.label}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: col.color, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>{col.label}</div>
+              {col.items.map((item, i) => (
+                <div key={i} style={S.bullet}>• {item}</div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Route Entry ──────────────────────────────────────────────────────────────
 
 export default function WriteUp() {
   const { week } = useParams<{ week: string }>();
 
   if (week === "1") return <Week1 />;
+  if (week === "2") return <Week2 />;
 
   return (
     <div style={{ maxWidth: 600, margin: "80px auto", textAlign: "center" }}>
