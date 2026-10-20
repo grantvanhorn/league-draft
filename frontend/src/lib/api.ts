@@ -94,6 +94,15 @@ export const createMatchWeek = (payload: { weekNumber: number; label?: string; s
   apiFetch<any>("/match-history/weeks", { method: "POST", body: JSON.stringify(payload) });
 export const fetchWeekData = (weekId: string) =>
   apiFetch<any>(`/match-history/weeks/${weekId}/fetch`, { method: "POST" });
+export const updateSeriesSubstitutes = (
+  weekId: string,
+  seriesId: string,
+  substitutes: { riotIdGameName: string; replacingRiotId: string; teamId: string }[]
+) =>
+  apiFetch<any>(`/match-history/weeks/${weekId}/series/${seriesId}/substitutes`, {
+    method: "PATCH",
+    body: JSON.stringify({ substitutes }),
+  });
 
 // Champions
 export const getChampions = () => apiFetch<ChampionData[]>("/champions");

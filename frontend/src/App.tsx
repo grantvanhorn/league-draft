@@ -9,6 +9,7 @@ import WriteUps from "./pages/WriteUps";
 import Teams from "./pages/Teams";
 import TeamDetail from "./pages/TeamDetail";
 import MatchHistory from "./pages/MatchHistory";
+import MatchSeriesPage from "./pages/MatchSeriesPage";
 import Settings from "./pages/Settings";
 
 export default function App() {
@@ -58,6 +59,7 @@ export default function App() {
             <Route path="/draft" element={<DraftPage />} />
             <Route path="/draft/:id" element={<DraftPage />} />
             <Route path="/matches" element={<MatchHistory />} />
+            <Route path="/matches/:seriesId" element={<MatchSeriesPage />} />
             <Route path="/write-ups" element={<WriteUps />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/write-ups/:week" element={<WriteUp />} />

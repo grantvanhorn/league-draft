@@ -64,6 +64,22 @@ export interface MatchParticipant {
   item6: number;
 }
 
+export interface TeamObjectives {
+  baron: { first: boolean; kills: number };
+  champion: { first: boolean; kills: number };
+  dragon: { first: boolean; kills: number };
+  inhibitor: { first: boolean; kills: number };
+  riftHerald: { first: boolean; kills: number };
+  tower: { first: boolean; kills: number };
+}
+
+export interface TeamInfo {
+  teamId: number;
+  win: boolean;
+  bans: { championId: number; pickTurn: number }[];
+  objectives: TeamObjectives;
+}
+
 export interface MatchInfo {
   gameId: number;
   gameMode: string;
@@ -72,6 +88,7 @@ export interface MatchInfo {
   gameDuration: number;
   gameStartTimestamp: number;
   participants: MatchParticipant[];
+  teams?: TeamInfo[];
 }
 
 export interface Match {
@@ -221,11 +238,18 @@ export interface SeriesGame {
   fetchedAt?: string;
 }
 
+export interface SeriesSubstitute {
+  riotIdGameName: string;  // in-game name (e.g. "SeagullPrincess")
+  replacingRiotId: string; // roster player being replaced (e.g. "DarrowTheReaper#red")
+  teamId: string;          // which tournament team they're subbing for
+}
+
 export interface MatchSeries {
   id: string;
   teamAId: string;
   teamBId: string;
   games: SeriesGame[];
+  substitutes?: SeriesSubstitute[];
 }
 
 export interface MatchWeek {
