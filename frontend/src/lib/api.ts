@@ -94,6 +94,9 @@ export const createMatchWeek = (payload: { weekNumber: number; label?: string; s
   apiFetch<any>("/match-history/weeks", { method: "POST", body: JSON.stringify(payload) });
 export const fetchWeekData = (weekId: string) =>
   apiFetch<any>(`/match-history/weeks/${weekId}/fetch`, { method: "POST" });
+export const getTournamentMatchIds = () => apiFetch<string[]>("/match-history/tournament-ids");
+export const getPlayerTournamentGames = (puuid: string) =>
+  apiFetch<import("../types").MatchRecord[]>(`/players/${puuid}/tournament-games`);
 export const updateSeriesSubstitutes = (
   weekId: string,
   seriesId: string,

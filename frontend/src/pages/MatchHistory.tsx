@@ -89,17 +89,17 @@ function SeriesRow({ series, teams }: { series: MatchSeries; teams: TournamentTe
       {/* Team A */}
       <div style={{ width: 180, display: "flex", flexDirection: "column", gap: 2 }}>
         <span style={{ fontWeight: 700, fontSize: 15, color: aColor }}>{teamA?.name ?? series.teamAId}</span>
-        {teamA && <span style={{ fontSize: 11, color: "#475569" }}>{teamA.abbreviation} · {teamA.division}</span>}
+        {teamA && <span style={{ fontSize: 11, color: "#94a3b8" }}>{teamA.abbreviation} · {teamA.division}</span>}
       </div>
 
       {/* Score or status */}
       <div style={{ width: 80, textAlign: "center" }}>
         {hasData ? (
           <span style={{ fontSize: 20, fontWeight: 800, color: "#e2e8f0", letterSpacing: 2 }}>
-            {aWins}<span style={{ color: "#334155", margin: "0 4px" }}>–</span>{bWins}
+            {aWins}<span style={{ color: "#94a3b8", margin: "0 4px" }}>–</span>{bWins}
           </span>
         ) : (
-          <span style={{ fontSize: 12, color: "#334155" }}>
+          <span style={{ fontSize: 12, color: "#94a3b8" }}>
             {fetchCount}/{series.games.length} fetched
           </span>
         )}
@@ -108,7 +108,7 @@ function SeriesRow({ series, teams }: { series: MatchSeries; teams: TournamentTe
       {/* Team B */}
       <div style={{ width: 180, display: "flex", flexDirection: "column", gap: 2 }}>
         <span style={{ fontWeight: 700, fontSize: 15, color: bColor }}>{teamB?.name ?? series.teamBId}</span>
-        {teamB && <span style={{ fontSize: 11, color: "#475569" }}>{teamB.abbreviation} · {teamB.division}</span>}
+        {teamB && <span style={{ fontSize: 11, color: "#94a3b8" }}>{teamB.abbreviation} · {teamB.division}</span>}
       </div>
 
       <div style={{ flex: 1 }} />
@@ -124,7 +124,7 @@ function SeriesRow({ series, teams }: { series: MatchSeries; teams: TournamentTe
             subs
           </span>
         )}
-        <span style={{ fontSize: 12, color: "#334155" }}>→</span>
+        <span style={{ fontSize: 12, color: "#94a3b8" }}>→</span>
       </div>
     </div>
   );
@@ -250,7 +250,7 @@ export default function MatchHistory() {
             }}>
               Week {w.weekNumber}
               {w.fetchedCount < w.totalGames && (
-                <span style={{ marginLeft: 6, fontSize: 10, color: "#475569" }}>{w.fetchedCount}/{w.totalGames}</span>
+                <span style={{ marginLeft: 6, fontSize: 10, color: "#94a3b8" }}>{w.fetchedCount}/{w.totalGames}</span>
               )}
             </button>
           ))}
@@ -265,11 +265,11 @@ export default function MatchHistory() {
           ))}
         </div>
       ) : weekSummaries.length === 0 ? (
-        <div style={{ textAlign: "center", padding: 60, color: "#475569" }}>
+        <div style={{ textAlign: "center", padding: 60, color: "#94a3b8" }}>
           No match data yet. Click "+ Add Week" to get started.
         </div>
       ) : (
-        <div style={{ textAlign: "center", padding: 60, color: "#475569" }}>Loading…</div>
+        <div style={{ textAlign: "center", padding: 60, color: "#94a3b8" }}>Loading…</div>
       )}
 
       {showAddWeek && <AddWeekModal onClose={() => setShowAddWeek(false)} onAdd={handleAddWeek} />}

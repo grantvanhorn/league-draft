@@ -96,13 +96,13 @@ function ItemStrip({ p, ddVersion }: { p: Participant; ddVersion: string }) {
       {slots.map((id, i) => {
         const url = itemIconUrl(ddVersion, id);
         return url
-          ? <img key={i} src={url} width={22} height={22} style={{ borderRadius: 3, border: "1px solid #2d2d4e" }} alt="" />
-          : <div key={i} style={{ width: 22, height: 22, borderRadius: 3, background: "#1e293b", border: "1px solid #1e293b" }} />;
+          ? <img key={i} src={url} width={28} height={28} style={{ borderRadius: 4, border: "1px solid #2d2d4e" }} alt="" />
+          : <div key={i} style={{ width: 28, height: 28, borderRadius: 4, background: "#1e293b", border: "1px solid #1e293b" }} />;
       })}
       <div style={{ width: 3 }} />
       {p.item6 > 0 && itemIconUrl(ddVersion, p.item6)
-        ? <img src={itemIconUrl(ddVersion, p.item6)!} width={22} height={22} style={{ borderRadius: 3, border: "1px solid #2d2d4e", opacity: 0.7 }} alt="" />
-        : <div style={{ width: 22, height: 22, borderRadius: 3, background: "#1e293b", opacity: 0.35 }} />}
+        ? <img src={itemIconUrl(ddVersion, p.item6)!} width={28} height={28} style={{ borderRadius: 4, border: "1px solid #2d2d4e", opacity: 0.7 }} alt="" />
+        : <div style={{ width: 28, height: 28, borderRadius: 4, background: "#1e293b", opacity: 0.35 }} />}
     </div>
   );
 }
@@ -113,18 +113,18 @@ function BansRow({ bans, champByKey, ddVersion }: {
 }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-      <span style={{ fontSize: 10, color: "#475569", textTransform: "uppercase", letterSpacing: 0.5, marginRight: 2 }}>bans</span>
+      <span style={{ fontSize: 10, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, marginRight: 2 }}>bans</span>
       {bans.map((b, i) => {
         const champ = champByKey[b.championId];
         return champ ? (
-          <div key={i} style={{ position: "relative", width: 22, height: 22 }}>
-            <img src={champIconUrl(ddVersion, champ.image.full)} width={22} height={22}
-              style={{ borderRadius: 3, filter: "grayscale(1) brightness(0.45)" }} alt={champ.name} title={champ.name} />
+          <div key={i} style={{ position: "relative", width: 28, height: 28 }}>
+            <img src={champIconUrl(ddVersion, champ.image.full)} width={28} height={28}
+              style={{ borderRadius: 4, filter: "grayscale(1) brightness(0.45)" }} alt={champ.name} title={champ.name} />
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <div style={{ width: 1, height: 28, background: "#f87171", transform: "rotate(45deg)", position: "absolute" }} />
+              <div style={{ width: 1, height: 34, background: "#f87171", transform: "rotate(45deg)", position: "absolute" }} />
             </div>
           </div>
-        ) : <div key={i} style={{ width: 22, height: 22, borderRadius: 3, background: "#1e293b" }} />;
+        ) : <div key={i} style={{ width: 28, height: 28, borderRadius: 4, background: "#1e293b" }} />;
       })}
     </div>
   );
@@ -137,7 +137,7 @@ function GameScoreboard({ game, teamA, teamB, aIsBlue, champMap, champByKey, ddV
   ddVersion: string; subInfo: Record<string, SeriesSubstitute>;
 }) {
   if (!game.data) return (
-    <div style={{ padding: 40, textAlign: "center", color: "#475569" }}>Game data not yet fetched</div>
+    <div style={{ padding: 40, textAlign: "center", color: "#94a3b8" }}>Game data not yet fetched</div>
   );
   const { participants, teams, gameDuration } = game.data.info;
   const blue = participants.filter((p) => p.teamId === 100);
@@ -179,7 +179,7 @@ function GameScoreboard({ game, teamA, teamB, aIsBlue, champMap, champByKey, ddV
           <span style={{ fontSize: 13, color: "#e2e8f0", fontWeight: 600 }}>
             {totalK} / <span style={{ color: "#f87171" }}>{totalD}</span> / {totalA}
           </span>
-          <span style={{ fontSize: 12, color: "#64748b", marginLeft: 4 }}>{fmtGold(totalGold)}</span>
+          <span style={{ fontSize: 12, color: "#94a3b8", marginLeft: 4 }}>{fmtGold(totalGold)}</span>
           {info && (
             <div style={{ display: "flex", gap: 10, fontSize: 11, marginLeft: 10 }}>
               {[
@@ -190,7 +190,7 @@ function GameScoreboard({ game, teamA, teamB, aIsBlue, champMap, champByKey, ddV
                 { e: "🏚", v: info.objectives.inhibitor.kills, t: "Inhibitors" },
               ].map(({ e, v, t }) => (
                 <span key={t} title={t} style={{ opacity: v > 0 ? 1 : 0.25, color: "#94a3b8" }}>
-                  {e} <b style={{ color: v > 0 ? "#e2e8f0" : "#475569" }}>{v}</b>
+                  {e} <b style={{ color: v > 0 ? "#e2e8f0" : "#94a3b8" }}>{v}</b>
                 </span>
               ))}
             </div>
@@ -198,13 +198,13 @@ function GameScoreboard({ game, teamA, teamB, aIsBlue, champMap, champByKey, ddV
         </div>
         {/* Column header */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 16px", borderBottom: "1px solid #1e293b" }}>
-          <div style={{ width: 32 }} /><div style={{ width: 136 }} /><div style={{ flex: 1 }} />
-          <div style={{ width: 163, fontSize: 10, color: "#334155", textAlign: "right" }}>Items</div>
-          <div style={{ width: 72, fontSize: 10, color: "#334155", textAlign: "center" }}>KDA</div>
-          <div style={{ width: 44, fontSize: 10, color: "#334155", textAlign: "right" }}>CS</div>
-          <div style={{ width: 92, fontSize: 10, color: "#334155", textAlign: "right" }}>Damage</div>
-          <div style={{ width: 44, fontSize: 10, color: "#334155", textAlign: "right" }}>Gold</div>
-          <div style={{ width: 28, fontSize: 10, color: "#334155", textAlign: "right" }}>👁</div>
+          <div style={{ width: 40 }} /><div style={{ width: 140 }} /><div style={{ flex: 1 }} />
+          <div style={{ width: 210, fontSize: 10, color: "#94a3b8", textAlign: "right" }}>Items</div>
+          <div style={{ width: 72, fontSize: 10, color: "#94a3b8", textAlign: "center" }}>KDA</div>
+          <div style={{ width: 44, fontSize: 10, color: "#94a3b8", textAlign: "right" }}>CS</div>
+          <div style={{ width: 92, fontSize: 10, color: "#94a3b8", textAlign: "right" }}>Damage</div>
+          <div style={{ width: 44, fontSize: 10, color: "#94a3b8", textAlign: "right" }}>Gold</div>
+          <div style={{ width: 28, fontSize: 10, color: "#94a3b8", textAlign: "right" }}>👁</div>
         </div>
         {/* Players */}
         {ps.map((p, i) => {
@@ -221,14 +221,14 @@ function GameScoreboard({ game, teamA, teamB, aIsBlue, champMap, champByKey, ddV
               borderBottom: i < ps.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
             }}>
               <img src={champIconUrl(ddVersion, champMap[p.championName]?.image.full ?? `${p.championName}.png`)}
-                width={32} height={32} style={{ borderRadius: 4, flexShrink: 0 }} alt={p.championName} title={p.championName} />
-              <div style={{ width: 136 }}>
+                width={40} height={40} style={{ borderRadius: 5, flexShrink: 0 }} alt={p.championName} title={p.championName} />
+              <div style={{ width: 140 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                   <span style={{ fontSize: 13, color: "#e2e8f0", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 94 }}>{name}</span>
                   {isSub && <span style={{ fontSize: 9, color: "#f59e0b", background: "#2d1f06", padding: "1px 4px", borderRadius: 3, fontWeight: 700, flexShrink: 0 }}>SUB</span>}
                   {swap && <span title={`Normally ${swap.rosterPos}`} style={{ fontSize: 9, color: "#a78bfa", background: "#1e1040", padding: "1px 4px", borderRadius: 3, fontWeight: 700, flexShrink: 0 }}>{swap.playedPos}</span>}
                 </div>
-                <div style={{ fontSize: 10, color: "#334155" }}>{p.championName}</div>
+                <div style={{ fontSize: 10, color: "#94a3b8" }}>{p.championName}</div>
               </div>
               <div style={{ flex: 1 }} />
               <ItemStrip p={p} ddVersion={ddVersion} />
@@ -236,11 +236,11 @@ function GameScoreboard({ game, teamA, teamB, aIsBlue, champMap, champByKey, ddV
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#e2e8f0" }}>
                   {p.kills}/<span style={{ color: "#f87171" }}>{p.deaths}</span>/{p.assists}
                 </div>
-                <div style={{ fontSize: 10, color: parseFloat(kdaStr) >= 5 ? "#f59e0b" : "#475569" }}>{kdaStr} KDA</div>
+                <div style={{ fontSize: 10, color: parseFloat(kdaStr) >= 5 ? "#f59e0b" : "#94a3b8" }}>{kdaStr} KDA</div>
               </div>
               <div style={{ width: 44, textAlign: "right" }}>
                 <div style={{ fontSize: 12, color: "#cbd5e1" }}>{cs}</div>
-                <div style={{ fontSize: 10, color: "#475569" }}>{gameDuration > 0 ? (cs / (gameDuration / 60)).toFixed(1) : "0"}/m</div>
+                <div style={{ fontSize: 10, color: "#94a3b8" }}>{gameDuration > 0 ? (cs / (gameDuration / 60)).toFixed(1) : "0"}/m</div>
               </div>
               <div style={{ width: 92, display: "flex", flexDirection: "column", gap: 2 }}>
                 <div style={{ fontSize: 11, color: "#cbd5e1", textAlign: "right" }}>{Math.round(p.totalDamageDealtToChampions / 1000)}k</div>
@@ -249,7 +249,7 @@ function GameScoreboard({ game, teamA, teamB, aIsBlue, champMap, champByKey, ddV
                 </div>
               </div>
               <div style={{ width: 44, textAlign: "right", fontSize: 12, color: "#94a3b8" }}>{fmtGold(p.goldEarned)}</div>
-              <div style={{ width: 28, textAlign: "right", fontSize: 11, color: "#475569" }}>{p.visionScore}</div>
+              <div style={{ width: 28, textAlign: "right", fontSize: 11, color: "#94a3b8" }}>{p.visionScore}</div>
             </div>
           );
         })}
@@ -273,7 +273,7 @@ function GameScoreboard({ game, teamA, teamB, aIsBlue, champMap, champByKey, ddV
 
   return (
     <div style={{ padding: "16px 0" }}>
-      <div style={{ textAlign: "right", fontSize: 12, color: "#475569", marginBottom: 12 }}>
+      <div style={{ textAlign: "right", fontSize: 12, color: "#94a3b8", marginBottom: 12 }}>
         {fmtDuration(gameDuration)} · {new Date(game.data.info.gameStartTimestamp).toLocaleDateString()}
       </div>
       <TeamBlock ps={bluePs}  team={blueTeam} info={blueInfo} won={blueWon2}  accentColor="#60a5fa" />
@@ -321,7 +321,7 @@ function ManageSubsModal({ series, teams, weekId, onClose, onSaved }: {
           return (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 10px", background: "#0f172a", borderRadius: 6, marginBottom: 6 }}>
               <span style={{ fontSize: 13, color: "#e2e8f0", fontWeight: 600 }}>{s.riotIdGameName}</span>
-              <span style={{ fontSize: 11, color: "#475569" }}>for</span>
+              <span style={{ fontSize: 11, color: "#94a3b8" }}>for</span>
               <span style={{ fontSize: 13, color: "#cbd5e1" }}>{s.replacingRiotId}</span>
               <span style={{ fontSize: 11, color: "#60a5fa", background: "#1e3a5f", padding: "1px 6px", borderRadius: 8 }}>{t?.abbreviation ?? s.teamId}</span>
               <div style={{ flex: 1 }} />
@@ -458,9 +458,9 @@ export default function MatchSeriesPage() {
     return result;
   }, [series?.games, subInfo, teamA, teamB]);
 
-  if (loading) return <div style={{ textAlign: "center", padding: 80, color: "#475569" }}>Loading…</div>;
+  if (loading) return <div style={{ textAlign: "center", padding: 80, color: "#94a3b8" }}>Loading…</div>;
   if (!series) return (
-    <div style={{ textAlign: "center", padding: 80, color: "#475569" }}>
+    <div style={{ textAlign: "center", padding: 80, color: "#94a3b8" }}>
       Series not found.{" "}
       <button onClick={() => navigate("/matches")} style={{ color: "#60a5fa", background: "none", border: "none", cursor: "pointer", fontSize: 14 }}>
         ← Back to Matches
@@ -477,7 +477,7 @@ export default function MatchSeriesPage() {
     <div>
       {/* Back */}
       <button onClick={() => navigate("/matches")}
-        style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", fontSize: 13, padding: "0 0 16px 0", display: "flex", alignItems: "center", gap: 6 }}>
+        style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 13, padding: "0 0 16px 0", display: "flex", alignItems: "center", gap: 6 }}>
         ← Matches
       </button>
 
@@ -486,10 +486,10 @@ export default function MatchSeriesPage() {
         <span style={{ fontWeight: 800, fontSize: 22, color: aColor }}>{teamA?.name ?? series.teamAId}</span>
         {series.games.some((g) => g.data) && (
           <span style={{ fontSize: 22, fontWeight: 800, color: "#e2e8f0", background: "#0f172a", padding: "3px 16px", borderRadius: 24 }}>
-            {aWins}<span style={{ color: "#334155", margin: "0 4px" }}>–</span>{bWins}
+            {aWins}<span style={{ color: "#94a3b8", margin: "0 4px" }}>–</span>{bWins}
           </span>
         )}
-        <span style={{ fontSize: 16, color: "#334155" }}>vs</span>
+        <span style={{ fontSize: 16, color: "#94a3b8" }}>vs</span>
         <span style={{ fontWeight: 800, fontSize: 22, color: bColor }}>{teamB?.name ?? series.teamBId}</span>
         {hasSubs && <span style={{ fontSize: 11, color: "#f59e0b", background: "#2d1f06", padding: "3px 10px", borderRadius: 10, fontWeight: 600 }}>SUBS</span>}
         <div style={{ flex: 1 }} />
@@ -507,7 +507,7 @@ export default function MatchSeriesPage() {
             return (
               <span key={i} style={{ fontSize: 12, color: "#cbd5e1" }}>
                 <span style={{ color: "#f59e0b", fontWeight: 700 }}>{s.riotIdGameName}</span>
-                <span style={{ color: "#475569" }}> subbing for </span>
+                <span style={{ color: "#94a3b8" }}> subbing for </span>
                 <span style={{ color: "#94a3b8" }}>{s.replacingRiotId.split("#")[0]}</span>
                 <span style={{ color: "#60a5fa" }}> ({t?.abbreviation})</span>
                 {subSwap && <span style={{ color: "#a78bfa" }}> · played {subSwap.playedPos} instead of {subSwap.rosterPos}</span>}
@@ -517,7 +517,7 @@ export default function MatchSeriesPage() {
           {allRoleSwaps.filter((sw) => !sw.isSub).map((sw, i) => (
             <span key={`swap-${i}`} style={{ fontSize: 12, color: "#cbd5e1" }}>
               <span style={{ color: "#a78bfa", fontWeight: 700 }}>{sw.riotIdGameName}</span>
-              <span style={{ color: "#475569" }}> moved to {sw.playedPos} (normally {sw.rosterPos})</span>
+              <span style={{ color: "#94a3b8" }}> moved to {sw.playedPos} (normally {sw.rosterPos})</span>
             </span>
           ))}
         </div>
@@ -545,7 +545,7 @@ export default function MatchSeriesPage() {
                 borderBottom: isActive ? "2px solid #3b82f6" : "2px solid transparent",
                 opacity: hasData ? 1 : 0.4,
               }}>
-              <span style={{ fontSize: 12, color: isActive ? "#3b82f6" : "#64748b", fontWeight: isActive ? 700 : 400, width: 52, flexShrink: 0 }}>
+              <span style={{ fontSize: 12, color: isActive ? "#3b82f6" : "#94a3b8", fontWeight: isActive ? 700 : 400, width: 52, flexShrink: 0 }}>
                 Game {g.gameNumber}
               </span>
               {hasData ? (
@@ -555,13 +555,13 @@ export default function MatchSeriesPage() {
                   <div style={{ display: "flex", gap: 2 }}>
                     {bluePs.map((p, i) => (
                       <img key={i} src={champIconUrl(ddVersion, champMap[p.championName]?.image.full ?? `${p.championName}.png`)}
-                        width={26} height={26} style={{ borderRadius: 3, opacity: blueWon ? 1 : 0.4 }} alt={p.championName} title={p.championName} />
+                        width={32} height={32} style={{ borderRadius: 4, opacity: blueWon ? 1 : 0.4 }} alt={p.championName} title={p.championName} />
                     ))}
                   </div>
                   <span style={{ fontSize: 13, fontWeight: 800, color: blueWon ? "#4ade80" : "#f87171", width: 18, textAlign: "center" }}>
                     {blueWon ? "W" : "L"}
                   </span>
-                  <span style={{ fontSize: 11, color: "#334155" }}>–</span>
+                  <span style={{ fontSize: 11, color: "#94a3b8" }}>–</span>
                   <span style={{ fontSize: 13, fontWeight: 800, color: blueWon ? "#f87171" : "#4ade80", width: 18, textAlign: "center" }}>
                     {blueWon ? "L" : "W"}
                   </span>
@@ -569,15 +569,15 @@ export default function MatchSeriesPage() {
                   <div style={{ display: "flex", gap: 2 }}>
                     {redPs.map((p, i) => (
                       <img key={i} src={champIconUrl(ddVersion, champMap[p.championName]?.image.full ?? `${p.championName}.png`)}
-                        width={26} height={26} style={{ borderRadius: 3, opacity: blueWon ? 0.4 : 1 }} alt={p.championName} title={p.championName} />
+                        width={32} height={32} style={{ borderRadius: 4, opacity: blueWon ? 0.4 : 1 }} alt={p.championName} title={p.championName} />
                     ))}
                   </div>
                   <span style={{ fontSize: 11, fontWeight: 700, color: "#f87171", width: 34, flexShrink: 0 }}>{redTeam?.abbreviation}</span>
                   <div style={{ flex: 1 }} />
-                  <span style={{ fontSize: 11, color: "#475569" }}>{fmtDuration(g.data!.info.gameDuration)}</span>
+                  <span style={{ fontSize: 11, color: "#94a3b8" }}>{fmtDuration(g.data!.info.gameDuration)}</span>
                 </>
               ) : (
-                <span style={{ fontSize: 11, color: "#334155" }}>Not fetched</span>
+                <span style={{ fontSize: 11, color: "#94a3b8" }}>Not fetched</span>
               )}
             </div>
           );

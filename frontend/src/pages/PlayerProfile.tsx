@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getPlayer, refreshPlayer, getDDVersion, getChampions, submitLpHistory, getTournamentTeams } from "../lib/api";
+import { getPlayer, refreshPlayer, getDDVersion, getChampions, submitLpHistory, getTournamentTeams, getPlayerTournamentGames } from "../lib/api";
 import { PlayerProfile, MatchRecord, RankedEntry, RankedSnapshot, ChampionData, TournamentTeam } from "../types";
 import { profileIconUrl, champIconUrl, tierColor } from "../lib/ddragon";
 import RankBadge from "../components/RankBadge";
@@ -375,7 +375,7 @@ function RankCard({ label, entry }: { label: string; entry: RankedEntry | null }
   );
 }
 
-function GameRow({ match, champMap, ddVersion }: { match: MatchRecord; champMap: Record<string, ChampionData>; ddVersion: string }) {
+function GameRow({ match, champMap, ddVersion, isTournament }: { match: MatchRecord; champMap: Record<string, ChampionData>; ddVersion: string; isTournament?: boolean }) {
   const champ = champMap[match.championName];
   const deaths = match.kda.deaths;
   const ratio = deaths === 0 ? "∞" : ((match.kda.kills + match.kda.assists) / deaths).toFixed(2);
@@ -403,7 +403,14 @@ function GameRow({ match, champMap, ddVersion }: { match: MatchRecord; champMap:
         <div style={{ fontSize: 13, fontWeight: 700, color: match.win ? "#4ade80" : "#f87171" }}>
           {match.win ? "Victory" : "Defeat"}
         </div>
-        <div style={{ fontSize: 11, color: "#8899aa" }}>{queueShort(match.queueId)}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+          <span style={{ fontSize: 11, color: "#8899aa" }}>{queueShort(match.queueId)}</span>
+          {isTournament && (
+            <span style={{ fontSize: 9, color: "#f59e0b", background: "rgba(245,158,11,0.12)", border: "1px solid rgba(245,158,11,0.3)", padding: "1px 5px", borderRadius: 8, fontWeight: 700, letterSpacing: 0.4 }}>
+              TOURNEY
+            </span>
+          )}
+        </div>
         <div style={{ fontSize: 11, color: "#cbd5e1" }}>{fmtDuration(match.gameDuration)}</div>
       </div>
 
@@ -510,6 +517,7 @@ export default function PlayerProfilePage() {
   const [champMap, setChampMap] = useState<Record<string, ChampionData>>({});
   const { selected: queueFilter, toggle: toggleQueue, passes: queuePasses } = useQueueFilter();
   const [champPosFilter, setChampPosFilter] = useState<PosFilter>("ALL");
+  const [tournamentGames, setTournamentGames] = useState<MatchRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lpPanelOpen, setLpPanelOpen] = useState(false);
@@ -519,6 +527,7 @@ export default function PlayerProfilePage() {
 
   useEffect(() => {
     if (!puuid) return;
+    getPlayerTournamentGames(puuid).then(setTournamentGames);
     Promise.all([getPlayer(puuid), getDDVersion(), getChampions(), getTournamentTeams()]).then(([p, { version }, champs, teams]) => {
       setProfile(p);
       setDdVersion(version);
@@ -532,9 +541,19 @@ export default function PlayerProfilePage() {
     });
   }, [puuid]);
 
-  const allMatches: MatchRecord[] = profile
-    ? (profile.matchHistory?.length ? profile.matchHistory : profile.recentMatches ?? [])
-    : [];
+  const tournamentMatchIds = useMemo(
+    () => new Set(tournamentGames.map((g) => g.matchId)),
+    [tournamentGames]
+  );
+
+  const allMatches: MatchRecord[] = useMemo(() => {
+    if (!profile) return [];
+    const riotMatches = profile.matchHistory?.length ? profile.matchHistory : profile.recentMatches ?? [];
+    // Merge tournament games, deduping by matchId (in case Riot also returned them)
+    const seen = new Set(riotMatches.map((m) => m.matchId));
+    const extra = tournamentGames.filter((g) => !seen.has(g.matchId));
+    return [...riotMatches, ...extra].sort((a, b) => b.gameDate - a.gameDate);
+  }, [profile, tournamentGames]);
 
   const queuesPresent = useMemo(
     () => [...new Set(allMatches.map((m) => m.queueId).filter(Boolean))] as number[],
@@ -869,7 +888,7 @@ export default function PlayerProfilePage() {
             {matches.length} games
           </div>
           {matches.map((m) => (
-            <GameRow key={m.matchId} match={m} champMap={champMap} ddVersion={ddVersion} />
+            <GameRow key={m.matchId} match={m} champMap={champMap} ddVersion={ddVersion} isTournament={tournamentMatchIds.has(m.matchId)} />
           ))}
           {matches.length === 0 && (
             <div style={{ color: "#cbd5e1", padding: 40, textAlign: "center", background: "#16213e", borderRadius: 10, border: "1px solid #2d2d4e" }}>

@@ -48,7 +48,7 @@ export default function App() {
             </NavLink>
           ))}
         </nav>
-        <main style={{ padding: "24px" }}>
+        <main style={{ padding: "24px", maxWidth: 1400, margin: "0 auto" }}>
           <Routes>
             <Route path="/" element={<TeamPage />} />
             <Route path="/players" element={<Players />} />

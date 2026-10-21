@@ -30,6 +30,14 @@ router.get("/weeks/:weekId", (req: Request, res: Response) => {
   return res.json(week);
 });
 
+// GET /api/match-history/tournament-ids
+// Returns all matchIds across every series in every week
+router.get("/tournament-ids", (_req: Request, res: Response) => {
+  const weeks = getMatchWeeks();
+  const ids = weeks.flatMap((w) => w.series.flatMap((s) => s.games.map((g) => g.matchId)));
+  res.json(ids);
+});
+
 // POST /api/match-history/weeks
 // Body: { weekNumber: number, label?: string, series: [{ teamAId, teamBId, games: [{ gameNumber, matchId }] }] }
 router.post("/weeks", (req: Request, res: Response) => {
