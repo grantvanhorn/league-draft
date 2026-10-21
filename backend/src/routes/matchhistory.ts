@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { getMatchWeeks, getMatchWeek, upsertMatchWeek } from "../services/storage";
 import { getMatch } from "../services/riot";
+import { getStoredMatch, saveMatch } from "../services/matchStore";
 import { MatchWeek, MatchSeries, SeriesGame } from "../types";
 
 const router = Router();
@@ -27,6 +28,14 @@ router.get("/weeks/:weekId", (req: Request, res: Response) => {
   const week = getMatchWeek(req.params.weekId);
   if (!week) return res.status(404).json({ error: "Week not found" });
   return res.json(week);
+});
+
+// GET /api/match-history/tournament-ids
+// Returns all matchIds across every series in every week
+router.get("/tournament-ids", (_req: Request, res: Response) => {
+  const weeks = getMatchWeeks();
+  const ids = weeks.flatMap((w) => w.series.flatMap((s) => s.games.map((g) => g.matchId)));
+  res.json(ids);
 });
 
 // POST /api/match-history/weeks
@@ -67,6 +76,40 @@ router.post("/weeks", (req: Request, res: Response) => {
   return res.status(201).json(week);
 });
 
+// PATCH /api/match-history/weeks/:weekId/series/:seriesId/games
+// Body: { games: [{ gameNumber, matchId }] } — replaces game list (clears fetchedAt/data)
+router.patch("/weeks/:weekId/series/:seriesId/games", (req: Request, res: Response) => {
+  const week = getMatchWeek(req.params.weekId);
+  if (!week) return res.status(404).json({ error: "Week not found" });
+
+  const series = week.series.find((s) => s.id === req.params.seriesId);
+  if (!series) return res.status(404).json({ error: "Series not found" });
+
+  const { games } = req.body as { games: { gameNumber: number; matchId: string }[] };
+  if (!Array.isArray(games) || games.length === 0) return res.status(400).json({ error: "games must be a non-empty array" });
+
+  series.games = games.map((g) => ({ gameNumber: g.gameNumber, matchId: g.matchId }));
+  upsertMatchWeek(week);
+  return res.json(series);
+});
+
+// PATCH /api/match-history/weeks/:weekId/series/:seriesId/substitutes
+// Body: { substitutes: [{ riotIdGameName, replacingRiotId, teamId }] }
+router.patch("/weeks/:weekId/series/:seriesId/substitutes", (req: Request, res: Response) => {
+  const week = getMatchWeek(req.params.weekId);
+  if (!week) return res.status(404).json({ error: "Week not found" });
+
+  const series = week.series.find((s) => s.id === req.params.seriesId);
+  if (!series) return res.status(404).json({ error: "Series not found" });
+
+  const { substitutes } = req.body as { substitutes: { riotIdGameName: string; replacingRiotId: string; teamId: string }[] };
+  if (!Array.isArray(substitutes)) return res.status(400).json({ error: "substitutes must be an array" });
+
+  series.substitutes = substitutes;
+  upsertMatchWeek(week);
+  return res.json(series);
+});
+
 // POST /api/match-history/weeks/:weekId/fetch
 // Fetches Riot data for all unfetched games in the week
 router.post("/weeks/:weekId/fetch", async (req: Request, res: Response) => {
@@ -79,7 +122,15 @@ router.post("/weeks/:weekId/fetch", async (req: Request, res: Response) => {
     for (const game of series.games) {
       if (game.fetchedAt) continue; // already cached
       try {
-        const data = await getMatch(game.matchId);
+        // Check disk cache before hitting Riot API
+        const cached = getStoredMatch(game.matchId);
+        let data;
+        if (cached) {
+          data = cached;
+        } else {
+          data = await getMatch(game.matchId);
+          saveMatch(data);
+        }
         game.data = data;
         game.fetchedAt = new Date().toISOString();
       } catch (err) {

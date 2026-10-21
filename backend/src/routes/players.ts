@@ -4,8 +4,10 @@ import {
   upsertPlayer,
   deletePlayer,
   getPlayer,
+  getMatchWeeks,
 } from "../services/storage";
 import { buildPlayerProfile, refreshPlayerProfile } from "../services/riot";
+import { MatchRecord } from "../types";
 
 const router = Router();
 
@@ -49,6 +51,47 @@ router.post("/", async (req: Request, res: Response) => {
     const msg = err instanceof Error ? err.message : String(err);
     return res.status(500).json({ error: msg });
   }
+});
+
+// GET /api/players/:puuid/tournament-games
+// Returns MatchRecord-shaped entries synthesized from tournament week data for this player
+router.get("/:puuid/tournament-games", (req: Request, res: Response) => {
+  const { puuid } = req.params;
+  const weeks = getMatchWeeks();
+  const records: MatchRecord[] = [];
+
+  for (const week of weeks) {
+    for (const series of week.series) {
+      for (const game of series.games) {
+        if (!game.data) continue;
+        const info = game.data.info;
+        const p = info.participants.find((pp) => pp.puuid === puuid);
+        if (!p) continue;
+
+        const cs = p.totalMinionsKilled + p.neutralMinionsKilled;
+        const durationMin = info.gameDuration / 60;
+
+        records.push({
+          matchId: game.matchId,
+          championName: p.championName,
+          win: p.win,
+          kda: { kills: p.kills, deaths: p.deaths, assists: p.assists },
+          role: p.teamPosition,
+          gameDate: info.gameStartTimestamp,
+          gameDuration: info.gameDuration,
+          cs,
+          csPerMin: parseFloat((cs / durationMin).toFixed(2)),
+          damage: p.totalDamageDealtToChampions,
+          gold: p.goldEarned,
+          visionScore: p.visionScore,
+          queueId: info.queueId ?? 3130,
+        });
+      }
+    }
+  }
+
+  records.sort((a, b) => b.gameDate - a.gameDate);
+  return res.json(records);
 });
 
 // PUT /api/players/:puuid/refresh — accumulate new data from Riot API

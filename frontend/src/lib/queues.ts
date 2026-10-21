@@ -29,6 +29,7 @@ const QUEUE_LABELS: Record<number, string> = {
   1900: "Pick URF",
   2300: "Brawl",
   2400: "ARAM Mayhem",
+  3130: "Tournament",
 };
 
 export function queueLabel(id?: number): string {
