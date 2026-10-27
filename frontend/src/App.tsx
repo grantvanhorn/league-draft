@@ -11,6 +11,7 @@ import TeamDetail from "./pages/TeamDetail";
 import MatchHistory from "./pages/MatchHistory";
 import MatchSeriesPage from "./pages/MatchSeriesPage";
 import Settings from "./pages/Settings";
+import DeathHeatmap from "./pages/DeathHeatmap";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             { to: "/matches", label: "Matches" },
             { to: "/write-ups", label: "Write-Ups" },
             { to: "/settings", label: "Settings" },
+            { to: "/death-heatmap", label: "Heatmap" },
           ].map(({ to, label }) => (
             <NavLink
               key={to}
@@ -63,6 +65,7 @@ export default function App() {
             <Route path="/write-ups" element={<WriteUps />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/write-ups/:week" element={<WriteUp />} />
+            <Route path="/death-heatmap" element={<DeathHeatmap />} />
           </Routes>
         </main>
       </div>

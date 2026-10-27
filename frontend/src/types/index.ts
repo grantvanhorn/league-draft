@@ -121,3 +121,32 @@ export interface ChampionData {
   tags: string[];
   image: { full: string };
 }
+
+export interface DeathEvent {
+  matchId: string;
+  gameDate: number;
+  gameIndex: number;
+  timestamp: number;
+  position: { x: number; y: number };
+  killerChampion: string | null;
+  killerName: string | null;
+  assistingChampions: string[];
+  victimChampion: string;
+  win: boolean;
+}
+
+export interface HeatmapGameSummary {
+  matchId: string;
+  gameDate: number;
+  gameIndex: number;
+  champion: string;
+  win: boolean;
+  deathCount: number;
+}
+
+export interface DeathHeatmapData {
+  puuid: string;
+  riotId: string;
+  deaths: DeathEvent[];
+  games: HeatmapGameSummary[];
+}

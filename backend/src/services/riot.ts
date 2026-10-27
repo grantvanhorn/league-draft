@@ -8,6 +8,7 @@ import {
   MatchRecord,
   PlayerProfile,
   Position,
+  MatchTimeline,
 } from "../types";
 import { hasMatch, getStoredMatch, saveMatch, deriveMatchRecord } from "./matchStore";
 
@@ -133,6 +134,12 @@ export async function getAllMatchIds(
 export async function getMatch(matchId: string): Promise<Match> {
   return riotFetch<Match>(
     `https://${REGION}.api.riotgames.com/lol/match/v5/matches/${matchId}`
+  );
+}
+
+export async function getMatchTimeline(matchId: string): Promise<MatchTimeline> {
+  return riotFetch<MatchTimeline>(
+    `https://${REGION}.api.riotgames.com/lol/match/v5/matches/${matchId}/timeline`
   );
 }
 

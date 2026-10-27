@@ -275,3 +275,54 @@ export interface ChampionData {
   tags: string[];
   image: { full: string };
 }
+
+export interface TimelinePosition {
+  x: number;
+  y: number;
+}
+
+export interface TimelineFrame {
+  timestamp: number;
+  events: ({ type: string } & Record<string, unknown>)[];
+}
+
+export interface MatchTimeline {
+  metadata: {
+    matchId: string;
+    participants: string[]; // puuids, index 0 = participantId 1
+  };
+  info: {
+    frameInterval: number;
+    frames: TimelineFrame[];
+    participants?: { participantId: number; puuid: string }[];
+  };
+}
+
+export interface DeathEvent {
+  matchId: string;
+  gameDate: number;
+  gameIndex: number; // 1 = most recent flex game
+  timestamp: number; // ms into game
+  position: TimelinePosition;
+  killerChampion: string | null;
+  killerName: string | null;
+  assistingChampions: string[];
+  victimChampion: string;
+  win: boolean;
+}
+
+export interface HeatmapGameSummary {
+  matchId: string;
+  gameDate: number;
+  gameIndex: number;
+  champion: string;
+  win: boolean;
+  deathCount: number;
+}
+
+export interface DeathHeatmapData {
+  puuid: string;
+  riotId: string;
+  deaths: DeathEvent[];
+  games: HeatmapGameSummary[];
+}

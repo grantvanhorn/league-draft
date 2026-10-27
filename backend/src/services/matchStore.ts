@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
-import { Match, MatchRecord, MatchParticipant } from "../types";
+import { Match, MatchRecord, MatchParticipant, MatchTimeline } from "../types";
 
 const MATCHES_DIR = path.join(__dirname, "../../data/matches");
+const TIMELINES_DIR = path.join(__dirname, "../../data/timelines");
 
 function ensureDir() {
   if (!fs.existsSync(MATCHES_DIR)) fs.mkdirSync(MATCHES_DIR, { recursive: true });
@@ -29,6 +30,27 @@ export function getStoredMatch(matchId: string): Match | null {
 export function saveMatch(match: Match): void {
   ensureDir();
   fs.writeFileSync(matchPath(match.metadata.matchId), JSON.stringify(match));
+}
+
+// ─── Timeline cache ───────────────────────────────────────────────────────────
+
+function timelinePath(matchId: string): string {
+  return path.join(TIMELINES_DIR, `${matchId}.json`);
+}
+
+export function getStoredTimeline(matchId: string): MatchTimeline | null {
+  const p = timelinePath(matchId);
+  if (!fs.existsSync(p)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(p, "utf-8")) as MatchTimeline;
+  } catch {
+    return null;
+  }
+}
+
+export function saveTimeline(timeline: MatchTimeline): void {
+  if (!fs.existsSync(TIMELINES_DIR)) fs.mkdirSync(TIMELINES_DIR, { recursive: true });
+  fs.writeFileSync(timelinePath(timeline.metadata.matchId), JSON.stringify(timeline));
 }
 
 export function getAllCachedMatchIds(): Set<string> {
