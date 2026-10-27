@@ -1,4 +1,4 @@
-import { PlayerProfile, Team, DraftState, ChampionData, TournamentTeam, ImportStatus } from "../types";
+import { PlayerProfile, Team, DraftState, ChampionData, TournamentTeam, ImportStatus, DeathHeatmapData } from "../types";
 
 const BASE = "/api";
 
@@ -165,3 +165,7 @@ export const importExternalData = (puuid: string, payload: unknown) =>
     method: "POST",
     body: JSON.stringify(payload),
   });
+
+// Death heatmap
+export const getDeathHeatmap = (gameName: string, tagLine: string) =>
+  apiFetch<DeathHeatmapData>(`/death-heatmap/${encodeURIComponent(gameName)}/${encodeURIComponent(tagLine)}`);

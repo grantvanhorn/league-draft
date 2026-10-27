@@ -12,6 +12,7 @@ import championsRouter from "./routes/champions";
 import tournamentRouter from "./routes/tournament";
 import matchHistoryRouter from "./routes/matchhistory";
 import refetchRouter from "./routes/refetch";
+import deathHeatmapRouter from "./routes/deathheatmap";
 import { getMatchWeeks, upsertMatchWeek } from "./services/storage";
 import { week1 } from "./data/match-history-seed";
 
@@ -28,6 +29,7 @@ app.use("/api/champions", championsRouter);
 app.use("/api/tournament", tournamentRouter);
 app.use("/api/match-history", matchHistoryRouter);
 app.use("/api/refetch", refetchRouter);
+app.use("/api/death-heatmap", deathHeatmapRouter);
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
