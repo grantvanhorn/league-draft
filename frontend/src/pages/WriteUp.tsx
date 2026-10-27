@@ -1649,6 +1649,772 @@ function Week2() {
   );
 }
 
+// ─── Week 3 Data ──────────────────────────────────────────────────────────────
+
+const HS_PLAYERS: PlayerEntry[] = [
+  {
+    name: "TheNeighborsDuck",
+    role: "TOP",
+    tier: "GOLD",
+    rank: "I",
+    lp: 7,
+    games: 147,
+    wr: 54.4,
+    kda: 2.35,
+    avgDmg: 22100,
+    avgCs: 191.0,
+    playstyle:
+      "Ornn is his ranked primary at 50 games and 58% WR — but he has NEVER picked Ornn in four tournament games. In competitive play he consistently pivots to skirmish tops: Gnar (2 tournament picks), Darius (1), Renekton (1). Opponents who ban Ornn are wasting a slot. His real threat is his flexible carry-skirmisher identity that maps poorly to standard tank reads. Gold I with a winning record at top (147 games).",
+    threats: [
+      "Gnar (19g, 52.6% WR) — his clear tournament preference, played in 2/2 series',  wins games via mega-Gnar flips into team",
+      "Garen (10g, 70% WR) — hidden pocket with elite win rate, rarely scouted",
+      "TahmKench (8g, 62.5%) — tanky flex, disrupts dive attempts",
+      "If Gnar is banned: falls to Darius or Renekton — both skirmish picks he's shown in tournament",
+    ],
+    weaknesses: [
+      "KSante (12g, 25% WR) — poor results on the meta pick; avoid giving him this",
+      "Never runs Ornn in tournament despite 50 ranked games — either opponents ban it or he doesn't trust it competitively",
+      "Gold I is below CT's expectations for top elo — Ransom has played both Silver II and Gold IV flex",
+      "Skirmish-focused pool means he struggles against dedicated frontline/peel compositions",
+    ],
+    champs: [
+      { name: "Ornn", games: 50, wr: 58.0, kda: 2.9, avgDmg: 19489, avgCs: 184.4, note: "Ranked primary — NEVER picked in tournament" },
+      { name: "Gnar", games: 19, wr: 52.6, kda: 2.29, avgDmg: 26145, avgCs: 206.6, note: "Tournament staple (2/2 series)" },
+      { name: "Mordekaiser", games: 17, wr: 52.9, kda: 1.83, avgDmg: 23280, avgCs: 176.5 },
+      { name: "Garen", games: 10, wr: 70.0, kda: 1.95, avgDmg: 22867, avgCs: 218.7, note: "Pocket with elite WR" },
+      { name: "TahmKench", games: 8, wr: 62.5, kda: 2.97, avgDmg: 28707, avgCs: 186.0 },
+      { name: "Darius", games: 7, wr: 57.1, kda: 1.35, avgDmg: 21739, avgCs: 199.9, note: "Tournament pick (1g)" },
+    ],
+  },
+  {
+    name: "Trqnx",
+    role: "JGL",
+    tier: "GOLD",
+    rank: "I",
+    lp: 52,
+    games: 147,
+    wr: 53.1,
+    kda: 2.88,
+    avgDmg: 23500,
+    avgCs: 193.0,
+    playstyle:
+      "In tournament he runs exactly two picks: Sejuani (2 games) and XinZhao (2 games). Sejuani is his teamfight anchor — he posted 0/3/12 and 4/2/15 KDA lines on it, showing he prioritizes CC chains over kills. XinZhao provides early-game gank pressure. Ranked his Kayn (64.3%) and JarvanIV (77.8% in 9 games) are stronger, but neither has appeared in tournament yet. Gold I facing Oxymoronical (Emerald III) is CT's largest jungle elo advantage this season.",
+    threats: [
+      "Sejuani (11g, 63.6% ranked WR) — his tournament go-to; flank CC into team engages, synergizes with Ryze/Xr17rs ult combos",
+      "JarvanIV (9g, 77.8% ranked WR) — never played in tournament, lurking high-WR pick",
+      "Kayn (14g, 64.3%) — best ranked jungle pick, transforms into red/blue Kayn to suit composition",
+      "XinZhao — played in 2 tournament games, provides lane-gank pressure not available on Sejuani",
+    ],
+    weaknesses: [
+      "Gold I vs Oxymoronical (Emerald III) — CT's most lopsided jungle matchup this season",
+      "LeeSin (11g, 36.4% WR) — never land on this; poor results",
+      "Viego (8g, 25%) — avoids it now but may reach for it under pressure",
+      "Tournament pool is thin: two picks in four games — ban one and he must improvise",
+    ],
+    champs: [
+      { name: "Kayn", games: 14, wr: 64.3, kda: 2.01, avgDmg: 25554, avgCs: 204.7, note: "Best ranked jungle — unseen in tournament" },
+      { name: "Sejuani", games: 11, wr: 63.6, kda: 3.91, avgDmg: 19183, avgCs: 172.5, note: "Tournament primary (2 picks)" },
+      { name: "Shyvana", games: 10, wr: 60.0, kda: 2.79, avgDmg: 27333, avgCs: 205.6 },
+      { name: "JarvanIV", games: 9, wr: 77.8, kda: 3.87, avgDmg: 21563, avgCs: 179.0, note: "Elite WR, never played in tournament" },
+      { name: "Amumu", games: 8, wr: 50.0, kda: 2.98, avgDmg: 18800, avgCs: 176.8 },
+      { name: "LeeSin", games: 11, wr: 36.4, kda: 2.27, avgDmg: 18231, avgCs: 164.1, note: "Poor WR — avoid drafting vs this" },
+    ],
+  },
+  {
+    name: "Xr17rs",
+    role: "MID",
+    tier: "EMERALD",
+    rank: "II",
+    lp: 13,
+    games: 36,
+    wr: 58.3,
+    kda: 2.87,
+    avgDmg: 27900,
+    avgCs: 244.0,
+    playstyle:
+      "The most dangerous player CT will face in mid this season. Emerald II with only 36 ranked mid-lane games — he's primarily a flex player who adapts roles to team needs. In four tournament games he played four entirely different champions: Ryze, Tristana (MID), Locke, and Veigar. His Syndra (7g, 71.4% mid WR) is his best ranked mid pick and has never appeared in tournament — treat it as a pocket. Veigar (8/2/10 vs HYG) and Locke (13/4/7 vs HYG) show he can dominate on unfamiliar picks. Impossible to fully ban out — focus on denying his two dominant tournament performances.",
+    threats: [
+      "Veigar (2g ranked, 100% WR; 8/2/10 in tournament vs HYG) — dominant tournament performance, must-ban or must-answer",
+      "Locke (13/4/7 in tournament vs HYG) — second dominant tournament pick, versatile mid carry",
+      "Syndra (7g, 71.4% ranked WR) — his best mid pick in solo queue, never played in tournament — potential pocket reveal",
+      "Emerald II raw mechanics translate regardless of champion — any pick he lands will be executed at a higher elo ceiling than Hive (Gold I)",
+    ],
+    weaknesses: [
+      "Only 36 ranked mid games — thin sample, limited lane matchup reps",
+      "Ryze (2g, 50%) and Tristana mid (2g, 50%) are mediocre ranked results despite being tournament picks",
+      "Mel (3g, 33.3%) and Galio (2g, 0%) show poor results on picks he sometimes tries",
+      "Wide pool makes him flexible but also means he can land on suboptimal picks if bans land correctly",
+    ],
+    champs: [
+      { name: "Syndra", games: 7, wr: 71.4, kda: 3.03, avgDmg: 24501, avgCs: 223.9, note: "Best ranked mid pick — unplayed in tournament" },
+      { name: "Veigar", games: 2, wr: 100.0, kda: 3.73, avgDmg: 34846, avgCs: 266.0, note: "Tournament dominant (8/2/10 vs HYG)" },
+      { name: "Malzahar", games: 2, wr: 100.0, kda: 2.79, avgDmg: 37828, avgCs: 280.5 },
+      { name: "Ryze", games: 2, wr: 50.0, kda: 1.77, avgDmg: 28200, avgCs: 227.5, note: "Tournament pick vs NL" },
+      { name: "Tristana", games: 2, wr: 50.0, kda: 1.40, avgDmg: 24050, avgCs: 272.5, note: "MID Tristana — tournament surprise vs NL" },
+      { name: "Yone", games: 2, wr: 50.0, kda: 2.08, avgDmg: 27325, avgCs: 258.5 },
+    ],
+  },
+  {
+    name: "henry",
+    role: "BOT",
+    tier: "EMERALD",
+    rank: "II",
+    lp: 30,
+    games: 71,
+    wr: 55.0,
+    kda: 3.34,
+    avgDmg: 30000,
+    avgCs: 240.0,
+    playstyle:
+      "Not a traditional ADC player — henry is a high-elo flex player (Emerald II) who adapts the bot lane to his team's needs. His three tournament carries are all different and all dominant: Viktor BOT (12/4/9), Jinx (8/4/7), Draven (10/1/7). Draven at 100% WR across 6 ranked BOT games is his ace. Viktor BOT is a rare tournament flex that CT must prepare for. Senna (14g, 57.1% BOT WR) is his deepest BOT-role ranked pick. He also plays Twitch (8g, 62.5% BOT WR) — the same pick Nekter uses — creating a direct race to lock it.",
+    threats: [
+      "Draven (6g ranked, 100% BOT WR; 10/1/7 in tournament vs HYG) — #1 MUST-BAN, dominant in every appearance",
+      "Viktor BOT (5g, 80% WR; 12/4/9 in tournament vs NL) — surprise flex that creates a mid-tier power pick in bot",
+      "Twitch (8g, 62.5% BOT WR) — he plays the same pocket Nekter plays; one team bans it, or it becomes a race",
+      "Emerald II raw elo vs any CT bot laner — gap exists even against Nekter at Plat III flex",
+    ],
+    weaknesses: [
+      "Jinx and Senna require setup — he's not a self-sufficient carry; needs enchanter support to shine",
+      "After Draven + Viktor are banned: his ranked BOT pool falls to Senna (57%) and Jhin (50%) — manageable matchups",
+      "Yunara (11g, 45.5% BOT WR) — poor results; avoid giving it to him",
+      "No Ashe, no Kaisa, no traditional marksman depth — his pool is unique and thin outside of his 3-4 key picks",
+    ],
+    champs: [
+      { name: "Draven", games: 6, wr: 100.0, kda: 3.04, avgDmg: 21468, avgCs: 212.8, note: "MUST BAN — 100% WR + 10/1/7 tournament" },
+      { name: "Viktor", games: 5, wr: 80.0, kda: 3.38, avgDmg: 28746, avgCs: 252.0, note: "BOT flex, tournament confirmed" },
+      { name: "Senna", games: 14, wr: 57.1, kda: 4.42, avgDmg: 27962, avgCs: 235.7, note: "Deepest BOT ranked pick" },
+      { name: "Twitch", games: 8, wr: 62.5, kda: 3.29, avgDmg: 39076, avgCs: 225.9, note: "Shared pocket with Nekter — race to lock" },
+      { name: "Jhin", games: 8, wr: 50.0, kda: 4.56, avgDmg: 26578, avgCs: 276.9 },
+      { name: "Zeri", games: 5, wr: 60.0, kda: 2.20, avgDmg: 28808, avgCs: 225.0 },
+    ],
+  },
+  {
+    name: "rapunzelrae",
+    role: "SUP",
+    tier: "GOLD",
+    rank: "II",
+    lp: 9,
+    games: 311,
+    wr: 52.4,
+    kda: 3.57,
+    avgDmg: 9500,
+    avgCs: 27.0,
+    playstyle:
+      "The most experienced support in this matchup at 311 ranked games. Seraphine (122g, 54.9%) is her primary but she defaulted to Karma in 2 of 4 tournament games — Karma provides consistent movement-speed control and adaptive damage that works on any composition. Janna appeared in tournament game 2 vs HYG as a peel option. Her enchanter identity is deep: Seraphine, Karma, Neeko, Lulu all above 53% WR. Sona (24g, 33.3%) is her only notable landmine.",
+    threats: [
+      "Karma (71g, 56.3% WR) — tournament go-to (2/4 games); shields and W movement speed enable skirmish compositions",
+      "Seraphine (122g, 54.9%) — primary; massive game count makes her reliable under pressure",
+      "Lulu (23g, 56.5%) — pairs with henry's carry picks to create scaling hypercarry compositions",
+      "Neeko (28g, 53.6%) — underused in tournament, potential surprise; root + clone disrupts CT engage",
+    ],
+    weaknesses: [
+      "Sona (24g, 33.3% WR) — frequent pick with terrible results",
+      "Janna (7g, 42.9% WR) — played in tournament game 2 vs HYG despite poor results; reactive pick under pressure",
+      "Lux (10g, 30% WR) — do not let her onto this under any circumstances",
+      "Gold II mirrors Hond (Gold II) — no elo advantage in this lane for either side",
+    ],
+    champs: [
+      { name: "Seraphine", games: 122, wr: 54.9, kda: 3.58, avgDmg: 10420, avgCs: 32.0, note: "Primary — 122g, most experienced pick" },
+      { name: "Karma", games: 71, wr: 56.3, kda: 4.14, avgDmg: 7998, avgCs: 23.5, note: "Tournament primary (2/4 games)" },
+      { name: "Neeko", games: 28, wr: 53.6, kda: 2.07, avgDmg: 9984, avgCs: 40.6 },
+      { name: "Lulu", games: 23, wr: 56.5, kda: 3.23, avgDmg: 4801, avgCs: 17.3, note: "Enables henry's carries" },
+      { name: "Sona", games: 24, wr: 33.3, kda: 2.55, avgDmg: 8159, avgCs: 20.6, note: "Avoid — poor WR" },
+      { name: "Janna", games: 7, wr: 42.9, kda: 2.71, avgDmg: 4837, avgCs: 19.0, note: "Tournament pick despite poor WR" },
+    ],
+  },
+];
+
+// mojojoe: Diamond IV sub — addressed in TL;DR, not a full profile
+
+const CT_PLAYERS_W3: PlayerEntry[] = [
+  {
+    name: "Ransom",
+    role: "TOP",
+    tier: "SILVER",
+    rank: "II",
+    lp: 27,
+    games: 180,
+    wr: 50.6,
+    kda: 2.05,
+    avgDmg: 24000,
+    avgCs: 196.0,
+    playstyle: "Teamfight-oriented tank top. Malphite (70% WR across 20 games) remains the priority pick when available. Olaf and Sion are the strong pivot options. Flex queue GOLD IV (90W 85L) is a better indicator of his ceiling than Silver II solo queue.",
+    threats: ["Malphite (20g, 70% WR) — signature; HS will likely ban it", "Olaf (4g, 75%) — skirmish option that counters Gnar", "Sion (4g, 75%) — stable frontline, peel-tank for scaling comps"],
+    weaknesses: ["Cho'Gath (9g, 33.3% WR) — avoid entirely", "Silver II elo is below TheNeighborsDuck (Gold I)", "Jax (11g, 45.5%) — below 50% WR, avoid this matchup"],
+    champs: [
+      { name: "Malphite", games: 20, wr: 70, kda: 3.48, avgDmg: 27707, avgCs: 201.6, note: "HS will likely ban" },
+      { name: "Jax", games: 11, wr: 45.5, kda: 1.53, avgDmg: 23685, avgCs: 184.5, note: "Below 50% WR" },
+      { name: "Olaf", games: 4, wr: 75, kda: 3.14, avgDmg: 27000, avgCs: 199.8, note: "Skirmish counter to Gnar" },
+      { name: "Sion", games: 4, wr: 75, kda: 2.53, avgDmg: 15169, avgCs: 200.0, note: "Stable frontline" },
+      { name: "Nasus", games: 3, wr: 66.7, kda: 3.73, avgDmg: 30758, avgCs: 220.7 },
+      { name: "Yorick", games: 5, wr: 60, kda: 1.14, avgDmg: 18388, avgCs: 207.8 },
+    ],
+  },
+  {
+    name: "Oxymoronical",
+    role: "JGL",
+    tier: "EMERALD",
+    rank: "III",
+    lp: 32,
+    games: 286,
+    wr: 53.1,
+    kda: 2.7,
+    avgDmg: 26021,
+    avgCs: 214.1,
+    playstyle: "CT's most dominant lane advantage this week. Emerald III vs Trqnx (Gold I) — 2+ division gap. Nocturne (78.1% WR) will almost certainly be banned by HS. Shyvana (68.8%) is the primary fallback. Nasus (73.7%) and Qiyana (63.6%) add depth. This is CT's most exploitable lane — Oxy should be able to dominate the jungle and snowball leads for the team.",
+    threats: ["Nocturne (32g, 78.1%) — HS will ban; plan without it", "Shyvana (16g, 68.8%) — primary pivot after Nocturne ban, also denies Trqnx's secondary", "Nasus (19g, 73.7%) — unstoppable scaling option", "Qiyana (11g, 63.6%) — mobile skirmisher, punishes Trqnx's lack of early pressure"],
+    weaknesses: ["Lee Sin (17g, 41.2%) and Jarvan IV (13g, 23.1%) — avoid these vs HS", "Graves (14g, 28.6%) — very poor results"],
+    champs: [
+      { name: "Nocturne", games: 32, wr: 78.1, kda: 3.45, avgDmg: 29725, avgCs: 233.3, note: "HS will ban — plan without it" },
+      { name: "Nasus", games: 19, wr: 73.7, kda: 3.94, avgDmg: 25163, avgCs: 197.4 },
+      { name: "Shyvana", games: 16, wr: 68.8, kda: 4.05, avgDmg: 27245, avgCs: 235.6, note: "Primary pivot after Nocturne ban" },
+      { name: "Kayn", games: 19, wr: 52.6, kda: 2.35, avgDmg: 27317, avgCs: 205.8 },
+      { name: "Qiyana", games: 11, wr: 63.6, kda: 2.01, avgDmg: 22983, avgCs: 221.1 },
+      { name: "Diana", games: 9, wr: 55.6, kda: 2.96, avgDmg: 27001, avgCs: 248.1 },
+    ],
+  },
+  {
+    name: "HiveTheBhenchod",
+    role: "MID",
+    tier: "GOLD",
+    rank: "I",
+    lp: 92,
+    games: 293,
+    wr: 53.2,
+    kda: 2.9,
+    avgDmg: 27617,
+    avgCs: 201.1,
+    playstyle: "Deep mage pool with Viktor as the clear primary (80 games, 56.3% WR). Syndra and Veigar round out his carry mage identity. HS will almost certainly ban Viktor. Syndra (54g, 57.4%) is his strongest fallback. Veigar (32g, 59.4%) is his best pick if both are available. Faces Xr17rs (Emerald II) — a 2-division elo gap going the wrong way.",
+    threats: ["Viktor (80g, 56.3%) — HS will ban; Syndra is the backup", "Syndra (54g, 57.4%) — reliable fallback, 54-game depth ensures execution", "Veigar (32g, 59.4%) — snowball threat against Xr17rs's shorter-range mid picks"],
+    weaknesses: ["Orianna (72g, 47.2%) — most-played but worst WR; avoid this vs Xr17rs", "Gold I vs Emerald II — Hive faces a real elo disadvantage in this lane", "Fizz (28g, 50%) — inconsistent carry threat"],
+    champs: [
+      { name: "Viktor", games: 80, wr: 56.3, kda: 3.08, avgDmg: 33596, avgCs: 206.6, note: "HS will ban" },
+      { name: "Syndra", games: 54, wr: 57.4, kda: 2.88, avgDmg: 28831, avgCs: 200.1, note: "Primary fallback after Viktor ban" },
+      { name: "Veigar", games: 32, wr: 59.4, kda: 3.13, avgDmg: 24572, avgCs: 206.5, note: "Best pick if both available" },
+      { name: "Orianna", games: 72, wr: 47.2, kda: 2.79, avgDmg: 23648, avgCs: 203.6, note: "Avoid — below 50%" },
+      { name: "Fizz", games: 28, wr: 50, kda: 2.65, avgDmg: 22496, avgCs: 175.4 },
+      { name: "Ziggs", games: 15, wr: 60, kda: 3.38, avgDmg: 31492, avgCs: 215.3 },
+    ],
+  },
+  {
+    name: "Nekter",
+    role: "BOT",
+    tier: "PLATINUM",
+    rank: "III",
+    lp: 16,
+    games: 266,
+    wr: 47.4,
+    kda: 2.19,
+    avgDmg: 37500,
+    avgCs: 192.0,
+    playstyle:
+      "The Silver IV solo queue rank is misleading — Nekter barely plays solo queue (35 games). His REAL baseline is Platinum III flex with 266 games, and it's there that he goes off. Recent Kalista games: 41/8/4, 23/5/2, 18/4/5 — when he's rolling, he puts up monster numbers. Twitch is his signature in both queues at 82.4% flex WR (17 games) — the single highest WR pick on either team in this matchup. NOTE: henry (HS) also plays Twitch (62.5% BOT WR) — if neither team bans it, there's a direct race to lock it for Nekter.",
+    threats: [
+      "Twitch (17g flex, 82.4% WR) — combined with solo queue it's ~81% across 31 games. The pocket pick of the series.",
+      "Kalista (9g flex, 55.6% WR) — recent standout performances; high kill participation and execute threat",
+      "Vayne (31g flex, 54.8% WR) — consistent scaling carry, punishes engage-heavy comps",
+      "Ashe (16g flex, 62.5% WR) — solid poke and disengage utility with team ult",
+    ],
+    weaknesses: [
+      "Overall 47.4% flex WR — below 50%; team-dependent carry who needs setup",
+      "Xayah (27g flex, 40.7% WR) — do not play this",
+      "Jinx (14g flex, 35.7%) — poor results on hypercarries requiring crowd control setup",
+      "vs henry (Emerald II) — elo gap remains even with the Plat III flex correction",
+    ],
+    champs: [
+      { name: "Twitch", games: 17, wr: 82.4, kda: 2.83, avgDmg: 41114, avgCs: 167.9, note: "POCKET ACE — race with henry to lock it" },
+      { name: "Kaisa", games: 34, wr: 52.9, kda: 2.50, avgDmg: 39311, avgCs: 201.1, note: "Volume pick" },
+      { name: "Vayne", games: 31, wr: 54.8, kda: 2.24, avgDmg: 38570, avgCs: 181.7 },
+      { name: "Ashe", games: 16, wr: 62.5, kda: 2.39, avgDmg: 32514, avgCs: 194.9 },
+      { name: "Kalista", games: 9, wr: 55.6, kda: 2.74, avgDmg: 38266, avgCs: 200.1, note: "Recent hot streak — 41/8/4 game" },
+      { name: "Lucian", games: 20, wr: 50.0, kda: 2.54, avgDmg: 36630, avgCs: 200.6 },
+    ],
+  },
+  {
+    name: "Hond",
+    role: "SUP",
+    tier: "GOLD",
+    rank: "II",
+    lp: 52,
+    games: 76,
+    wr: 47.4,
+    kda: 2.48,
+    avgDmg: 16956,
+    avgCs: 44.1,
+    playstyle: "Lux is the primary — 19 games with 52.6% WR. Blitzcrank hook threat as second pick. Milio and Braum small sample standouts. Zyra is a landmine. Mirrors rapunzelrae at Gold II — support lane is a coin-flip, outcome determined by how CT's carries are set up.",
+    threats: ["Lux (19g, 52.6%) — poke + root; pairs well with Nekter's scaling ADCs", "Blitzcrank — hook threat; one landed grab often = free kill", "Sona (5g, 60%) — ult chains with Syndra wombo"],
+    weaknesses: ["Overall 47.4% WR — below 50%", "Zyra (7g, 28.6%) — avoid", "Blitzcrank (10g, 40%) — hook threat but below average WR"],
+    champs: [
+      { name: "Lux", games: 19, wr: 52.6, kda: 2.57, avgDmg: 24387, avgCs: 55.9, note: "Primary" },
+      { name: "Blitzcrank", games: 10, wr: 40, kda: 2.8, avgDmg: 11904, avgCs: 23.7 },
+      { name: "Zyra", games: 7, wr: 28.6, kda: 2.1, avgDmg: 23565, avgCs: 42.3, note: "Avoid" },
+      { name: "Sona", games: 5, wr: 60, kda: 2.27, avgDmg: 11948, avgCs: 20.6 },
+      { name: "Milio", games: 3, wr: 66.7, kda: 4.95, avgDmg: 9015, avgCs: 21.7 },
+      { name: "Braum", games: 3, wr: 66.7, kda: 3.58, avgDmg: 8369, avgCs: 32.3 },
+    ],
+  },
+];
+
+const HS_OPGG = "https://op.gg/lol/multisearch/na?summoners=TheNeighborsDuck%23NA1%2CTrqnx%23trqnx%2CXr17rs%23NA1%2Chenry%230006%2Crapunzelrae%23chai";
+
+// ─── Week 3 Write-Up Component ─────────────────────────────────────────────────
+
+function Week3() {
+  return (
+    <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+      {/* Header */}
+      <div style={{ marginBottom: 28 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+          <span style={{ fontSize: 13, color: "#64748b", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Week 3 — Lugia Division</span>
+        </div>
+        <h1 style={{ fontSize: 32, fontWeight: 800, color: "#f1f5f9", margin: 0, letterSpacing: "-0.5px" }}>
+          Collision Time <span style={{ color: "#3b82f6" }}>vs.</span> Huskers Scarlet
+        </h1>
+        <p style={{ color: "#64748b", marginTop: 8, marginBottom: 14, fontSize: 15 }}>Scouting report, tournament intel, ban priorities, and draft simulations</p>
+        <div style={{ display: "flex", gap: 10 }}>
+          <OpggLink href={CT_OPGG} label="Collision Time" />
+          <OpggLink href={HS_OPGG} label="Huskers Scarlet" />
+        </div>
+      </div>
+
+      {/* TL;DR */}
+      <div style={{ ...S.section, background: "#162032", borderColor: "#1e3a5f" }}>
+        <div style={S.sectionTitle}>TL;DR — Key Takeaways</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#60a5fa", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>HS Threat Tier</div>
+            {[
+              { name: "Xr17rs (MID)", tier: "S", reason: "Emer II, 4 different picks in 4 games — nearly unbanable" },
+              { name: "henry (BOT)", tier: "A", reason: "Emer II, Draven 100% WR, Viktor BOT flex, tournament dominant" },
+              { name: "mojojoe (SUB)", tier: "A", reason: "Diamond IV lurking — if he plays BOT, it's the worst matchup CT faces all season" },
+              { name: "Trqnx (JGL)", tier: "C", reason: "Gold I — CT's most lopsided jungle advantage this season" },
+              { name: "rapunzelrae (SUP)", tier: "C", reason: "Gold II, consistent but not carry-defining" },
+              { name: "TheNeighborsDuck (TOP)", tier: "C", reason: "Gold I skirmisher — Ransom at Gold IV flex is roughly even" },
+            ].map((t) => (
+              <div key={t.name} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 8 }}>
+                <span style={{ fontSize: 14, fontWeight: 800, color: t.tier === "S" ? "#f87171" : t.tier === "A" ? "#fb923c" : t.tier === "B" ? "#fbbf24" : "#94a3b8", width: 18, flexShrink: 0 }}>{t.tier}</span>
+                <div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#cbd5e1" }}>{t.name}</span>
+                  <span style={{ fontSize: 12, color: "#64748b" }}> — {t.reason}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#34d399", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>CT Advantages</div>
+            {[
+              "Oxymoronical (Emerald III) vs Trqnx (Gold I) — 2+ division jungle gap, CT's strongest lane",
+              "Nekter is legitimately Platinum III (266 flex games) — not Silver I; closer to henry than raw rank suggests",
+              "Nekter's Twitch: 82.4% flex WR — the single highest WR pick on either team",
+              "HS bans Nocturne + Malphite + Viktor every series; CT must plan without these 3 and have an answer",
+              "Trqnx only plays 2 champions in tournament (Sejuani/XinZhao) — ban Sejuani and his toolkit narrows sharply",
+            ].map((a, i) => (
+              <div key={i} style={S.bullet}>• {a}</div>
+            ))}
+          </div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#f87171", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>CT Risk Factors</div>
+            {[
+              "mojojoe (Diamond IV) has subbed in once — if he starts at BOT, CT faces the largest single-lane elo gap this season",
+              "Xr17rs played a different champion every tournament game; can't fully ban him out with 3 bans",
+              "henry's Draven (10/1/7) and Viktor BOT flex show a player who can dominate from unpredictable angles",
+              "HS is 4-0 in tournament — swept NL and HYG, with dominant individual performances throughout",
+              "Both henry AND Nekter play Twitch — if CT doesn't grab it early, henry gets it",
+            ].map((a, i) => (
+              <div key={i} style={S.bullet}>• {a}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Tournament Intel — new section for Week 3 */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Tournament Intel — 4 Games, All Wins</div>
+        <p style={{ fontSize: 13, color: "#64748b", marginBottom: 18 }}>
+          HS is 4–0 having swept both NL (Week 1) and HYG (Week 2). Unlike previous opponents, we have their actual tournament picks and bans. These outweigh ranked solo queue data — what they pick in a real game is what they'll pick against CT.
+        </p>
+
+        {/* Game table */}
+        <div style={{ overflowX: "auto", marginBottom: 24 }}>
+          <table style={{ ...S.table, minWidth: 700 }}>
+            <thead>
+              <tr>
+                <th style={S.th}>Game</th>
+                <th style={S.th}>Opp</th>
+                <th style={{ ...S.th, color: ROLE_COLOR.TOP }}>TOP</th>
+                <th style={{ ...S.th, color: ROLE_COLOR.JGL }}>JGL</th>
+                <th style={{ ...S.th, color: ROLE_COLOR.MID }}>MID</th>
+                <th style={{ ...S.th, color: ROLE_COLOR.BOT }}>BOT</th>
+                <th style={{ ...S.th, color: ROLE_COLOR.SUP }}>SUP</th>
+                <th style={S.thR}>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { game: "W1 G1", opp: "NL", top: "Gnar", jgl: "Sejuani", mid: "Ryze", bot: "Varus†", sup: "Seraphine", result: "WIN", kda: "† mojojoe sub: 14/1/4" },
+                { game: "W1 G2", opp: "NL", top: "Renekton", jgl: "XinZhao", mid: "Tristana", bot: "Viktor BOT", sup: "Karma", result: "WIN", kda: "henry: 12/4/9" },
+                { game: "W2 G1", opp: "HYG", top: "Darius", jgl: "Sejuani", mid: "Locke", bot: "Jinx", sup: "Karma", result: "WIN", kda: "Xr17rs: 13/4/7" },
+                { game: "W2 G2", opp: "HYG", top: "Gnar", jgl: "XinZhao", mid: "Veigar", bot: "Draven", sup: "Janna", result: "WIN", kda: "Draven: 10/1/7" },
+              ].map((row, i) => (
+                <tr key={i} style={{ background: i % 2 === 0 ? "transparent" : "#ffffff08" }}>
+                  <td style={{ ...S.td, fontWeight: 700, color: "#e2e8f0", fontSize: 12 }}>{row.game}</td>
+                  <td style={{ ...S.td, color: "#94a3b8", fontSize: 12 }}>{row.opp}</td>
+                  <td style={{ ...S.td, color: ROLE_COLOR.TOP, fontWeight: 600 }}>{row.top}</td>
+                  <td style={{ ...S.td, color: ROLE_COLOR.JGL, fontWeight: 600 }}>{row.jgl}</td>
+                  <td style={{ ...S.td, color: ROLE_COLOR.MID, fontWeight: 600 }}>{row.mid}</td>
+                  <td style={{ ...S.td, color: ROLE_COLOR.BOT, fontWeight: 600 }}>{row.bot}</td>
+                  <td style={{ ...S.td, color: ROLE_COLOR.SUP, fontWeight: 600 }}>{row.sup}</td>
+                  <td style={{ ...S.tdR, color: "#4ade80", fontSize: 12, fontWeight: 700 }}>
+                    {row.result}
+                    <div style={{ fontSize: 11, color: "#64748b", fontWeight: 400, marginTop: 2 }}>{row.kda}</div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Ban patterns */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 16 }}>
+          <div>
+            <div style={S.h3}>HS's Bans (what they target in enemy draft)</div>
+            {[
+              { ban: "Malphite", note: "Banned in 2 of 4 games — they know this ruins their composition. Expect it banned against Ransom." },
+              { ban: "Sylas", note: "Banned in both HYG games — they scout opponents and remove shared picks. Will likely ban Sylas even vs CT (general meta)." },
+              { ban: "Leona", note: "Banned in both HYG games targeting Smoothy's Leona. Less relevant vs CT." },
+              { ban: "Rell", note: "Banned in both HYG games — they specifically remove engage supports." },
+            ].map((b, i) => (
+              <div key={i} style={{ marginBottom: 8 }}>
+                <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>{b.ban}</span>
+                <span style={{ fontSize: 13, color: "#94a3b8" }}>{b.note}</span>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div style={S.h3}>What Opponents Banned vs HS</div>
+            {[
+              { ban: "Ornn (2×)", note: "NL banned it both games targeting TheNeighborsDuck's ranked primary. Don't waste this ban — he's never picked Ornn in 4 tournament games." },
+              { ban: "Draven (1×, G2)", note: "NL identified it in game 2 after scouting. We already know — ban it in game 1." },
+              { ban: "Twitch (2×)", note: "Opponents consistently banned Twitch — recognizing henry's BOT threat AND general meta power." },
+              { ban: "Seraphine (1×)", note: "HYG banned rapunzelrae's primary in game 1. Karma is her fallback and almost as reliable." },
+            ].map((b, i) => (
+              <div key={i} style={{ marginBottom: 8 }}>
+                <span style={{ ...S.tag, background: "#0f172a", color: "#64748b", border: "1px solid #33415566" }}>{b.ban}</span>
+                <span style={{ fontSize: 13, color: "#94a3b8" }}>{b.note}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ padding: "14px 18px", background: "#0f172a", borderRadius: 8, border: "1px solid #f59e0b44" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#fbbf24", marginBottom: 6 }}>Sub Watch: mojojoe (Diamond IV)</div>
+          <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>
+            HS subbed mojojoe into Game 1 vs NL at BOT. He played Varus (14/1/4) and dominated. Diamond IV vs Nekter (Platinum III flex) = 1-division gap — the largest single-lane disadvantage CT will face all season if he starts. His Ashe (78.6% WR, 14 games) is the most dangerous pick if he plays. Watch the sub declaration before the match and adjust bans if he's announced.
+          </div>
+        </div>
+      </div>
+
+      {/* HS Scouting */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Huskers Scarlet — Player Profiles</div>
+        {HS_PLAYERS.map((p) => (
+          <PlayerCard key={p.name} p={p} highlight={p.name === "Xr17rs" || p.name === "henry"} />
+        ))}
+      </div>
+
+      {/* CT Profiles */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Collision Time — Player Profiles</div>
+        {CT_PLAYERS_W3.map((p) => (
+          <PlayerCard key={p.name} p={p} />
+        ))}
+      </div>
+
+      {/* Ban Priorities */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Ban Priority Guide</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+          <div>
+            <div style={S.h3}>CT's Bans vs HS</div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#7f1d1d", color: "#fca5a5", border: "1px solid #ef444444" }}>1. Draven</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>henry's 100% WR ranked (6 BOT games) + 10/1/7 tournament performance. The single most dangerous tournament pick on their roster. Always ban first.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#7f1d1d", color: "#fca5a5", border: "1px solid #ef444444" }}>2. Sejuani</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Trqnx's tournament primary (2/2 series, 2 picks). 63.6% ranked WR. Removing it collapses his tournament-tested toolkit and forces improvisation on Kayn or JarvanIV.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#7f1d1d", color: "#fca5a5", border: "1px solid #ef444444" }}>3. Veigar</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Xr17rs's dominant tournament mid pick (8/2/10 vs HYG). His other picks (Ryze, Tristana) have mediocre ranked results — force him onto those.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#78350f", color: "#fde68a", border: "1px solid #f59e0b44" }}>4. Viktor (situational)</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Only if HS doesn't ban it. henry's BOT flex (80% WR, 5 games + tournament). Removes both the Hive mirror threat AND henry's strongest flex pick.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#78350f", color: "#fde68a", border: "1px solid #f59e0b44" }}>5. Karma / Seraphine</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>rapunzelrae's tournament primaries. Banning Karma (71g, 56.3%) or Seraphine (122g, 54.9%) removes her most comfortable pick. Pick whichever isn't already taken in pick phase.</span>
+            </div>
+            <div style={{ marginTop: 12, padding: "10px 14px", background: "#0f172a", borderRadius: 8, border: "1px solid #334155" }}>
+              <span style={{ fontSize: 13, color: "#fbbf24" }}>Sub contingency:</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}> If mojojoe is announced as BOT starter, upgrade ban #4 to Ashe (his 78.6% WR signature) and add Varus (14/1/4 tournament) as #5. His Kaisa (56.2%) becomes the managed threat.</span>
+            </div>
+          </div>
+
+          <div>
+            <div style={S.h3}>HS's Likely Bans vs CT</div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Expected: Nocturne</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Oxy's 78.1% WR — they will scout this. Plan without Nocturne in every scenario.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Expected: Malphite</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>They banned it in 2 of 4 tournament games. Ransom's 70% WR is documented. Expect this ban.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Expected: Viktor</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Hive's 80-game signature. HS banned Viktor in game 2 vs HYG after spotting henry's BOT Viktor. They're Viktor-aware.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Possible: Twitch</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Opponents banned Twitch vs HS in 2 of 4 games. HS knows Twitch is dangerous (henry plays it) — they may ban it proactively.</span>
+            </div>
+            <div style={{ marginBottom: 6 }}>
+              <span style={{ ...S.tag, background: "#1a1a2e", color: "#94a3b8", border: "1px solid #33415566" }}>Possible: Shyvana</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}>Oxy's 68.8% WR fallback after Nocturne. If they want to fully shut down his jungle, they ban both.</span>
+            </div>
+            <div style={{ marginTop: 12, padding: "10px 14px", background: "#0f172a", borderRadius: 8, border: "1px solid #334155" }}>
+              <span style={{ fontSize: 13, color: "#fbbf24" }}>💡 Strategic Note:</span>
+              <span style={{ fontSize: 13, color: "#94a3b8" }}> If HS bans Nocturne + Malphite + Viktor, CT pivots to: Shyvana (Oxy 68.8%) + Syndra/Veigar (Hive 57–59%) + Olaf/Sion (Ransom 75%). These are all documented high-WR picks that HS's scouts may not have deep reads on.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Playstyle Analysis */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Playstyle & Matchup Analysis</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 20 }}>
+          <div>
+            <div style={S.h3}>HS Tendencies</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Adaptive composition:</b> HS never runs the same composition twice. Each tournament game featured different mid and bot picks — their win condition shifts around whatever best counters the enemy draft, not a preset identity.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Skirmish-heavy top:</b> TheNeighborsDuck consistently picks engage-skirmishers (Gnar, Darius, Renekton) — never the tank Ornn that is his ranked primary. Expect a team that wants mobile front-to-back fights.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Enchanter support enabling BOT carry:</b> rapunzelrae stacks Karma/Seraphine movement-speed shields to let henry's Draven/Jinx/Senna scale into teamfights.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Their win condition:</b> Xr17rs snowballs mid on whatever pick he reveals last → Trqnx's Sejuani provides a teamfight anchor → henry carries bot with rapunzelrae enabling his damage.</div>
+          </div>
+          <div>
+            <div style={S.h3}>CT's Win Condition</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Dominate the jungle:</b> Trqnx (Gold I) vs Oxymoronical (Emerald III) is CT's biggest lane edge. Oxy invades early, steals camps, snowballs bot to offset henry's elo advantage, and takes over dragon control with Shyvana.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Lock Twitch early:</b> Nekter's 82.4% flex Twitch is the highest single-pick WR in this matchup. Grab it Blue side or ban Draven on Red side — don't leave both Twitch AND Draven open.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Force Xr17rs onto average picks:</b> Banning Veigar (his dominant tournament pick) and letting him land on Ryze or Tristana (both 50% ranked WR) is the right exchange — one ban, mediocre fallback.</div>
+            <div style={S.bullet}>• <b style={{ color: "#cbd5e1" }}>Syndra/Veigar mid carries:</b> With Viktor banned, Hive's Syndra (54g, 57.4%) or Veigar (32g, 59.4%) should be locked in early. Both outscale Ryze/Tristana once Trqnx's CC is removed via Sejuani ban.</div>
+          </div>
+        </div>
+        <div style={{ padding: "14px 18px", background: "#0f172a", borderRadius: 8, border: "1px solid #334155" }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#f1f5f9", marginBottom: 8 }}>Strongest vs. Weakest — HS Assessment</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div>
+              <div style={{ fontSize: 12, color: "#f87171", fontWeight: 700, marginBottom: 4, textTransform: "uppercase" }}>Strongest: Xr17rs (MID)</div>
+              <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Emerald II with only 36 ranked mid games — but four tournament games, four dominant performances on four different champions. His Syndra (7g, 71.4% mid WR) is the hidden pocket. The 2-division gap vs Hive (Gold I) is real and consistent. Best answer: ban Veigar, accept he'll play Ryze/Tristana, and trust Syndra to win the mid lane matchup.</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 12, color: "#4ade80", fontWeight: 700, marginBottom: 4, textTransform: "uppercase" }}>Weakest: Trqnx (JGL)</div>
+              <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>Gold I with a 53.1% jungle WR facing Oxymoronical (Emerald III). His tournament picks are exactly two champions: Sejuani and XinZhao. Ban Sejuani and he must improvise on Kayn or JarvanIV — picks he hasn't tested in tournament. Oxymoronical can invade freely, steal objectives, and snowball the map. This is CT's biggest exploitable advantage.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Draft Simulations */}
+      <div style={S.section}>
+        <div style={S.sectionTitle}>Draft Simulations</div>
+        <p style={{ fontSize: 14, color: "#64748b", marginBottom: 20 }}>
+          Three scenarios covering both sides and the Twitch pocket race. All scenarios assume HS bans Nocturne + Malphite + Viktor — the pattern they've shown in every scouted series. CT bans are built from tournament intel.
+        </p>
+
+        <DraftSim
+          title="Scenario A — CT Blue Side (Standard)"
+          ctSide="Blue"
+          opponentName="Huskers Scarlet"
+          scenario="Blue side lets CT grab Shyvana at B1, denying Trqnx's secondary jungle while giving Oxy his 68.8% WR pick. Bans target Draven (henry's tournament ace), Sejuani (Trqnx's tournament primary), and Veigar (Xr17rs's dominant mid). HS burns Nocturne + Malphite + Viktor as expected."
+          p1Bans={[
+            "Draven",    // CT Blue1: henry's 100% ranked WR + 10/1/7 tournament
+            "Nocturne",  // HS Red1: Oxy's 78% WR, expected ban
+            "Sejuani",   // CT Blue2: Trqnx's tournament primary, forces improvisation
+            "Malphite",  // HS Red2: Ransom's 70% WR, expected ban
+            "Veigar",    // CT Blue3: Xr17rs's dominant tournament pick (8/2/10)
+            "Viktor",    // HS Red3: Hive's signature, expected ban
+          ]}
+          p1Picks={[
+            { champ: "Shyvana", role: "JGL" },   // CT B1: Oxy 68.8% WR, also denies Trqnx's secondary
+            { champ: "Gnar", role: "TOP" },       // HS R1: TheNeighborsDuck's tournament primary
+            { champ: "Ryze", role: "MID" },       // HS R2: Xr17rs falls to tournament pick (50% ranked WR)
+            { champ: "Syndra", role: "MID" },     // CT B2: Hive 57.4% WR on 54 games, dominates Ryze early
+            { champ: "Olaf", role: "TOP" },       // CT B3: Ransom 75% WR, skirmish match into Gnar
+            { champ: "Karma", role: "SUP" },      // HS R3: rapunzelrae's tournament primary
+          ]}
+          p2Bans={[
+            "Twitch",     // HS Red1: they'll deny Nekter/henry's shared pocket
+            "Jinx",       // CT Blue1: henry's remaining tournament BOT pick after Draven banned
+            "Ashe",       // HS Red2: deny Nekter's 62.5% flex pick
+            "Seraphine",  // CT Blue2: remove rapunzelrae's primary (122g 54.9%), forces Lulu/Neeko
+          ]}
+          p2Picks={[
+            { champ: "Kayn", role: "JGL" },    // HS R4: Trqnx — best remaining after Sejuani ban (64.3% WR)
+            { champ: "Kaisa", role: "BOT" },   // CT B4: Nekter — Twitch/Ashe banned, Kaisa 52.9% flex WR
+            { champ: "Lux", role: "SUP" },     // CT B5: Hond 52.6% WR, root + poke pairs with Syndra
+            { champ: "Lulu", role: "SUP" },    // HS R5: rapunzelrae — Seraphine banned, Lulu (23g 56.5%)
+          ]}
+          notes={[
+            "Shyvana B1 is non-negotiable on blue side — it's Oxy's 68.8% WR pick AND removes Trqnx's secondary jungle option in one move.",
+            "Draven ban (CT Blue1) is the keystone: every game henry played Draven in tournament, CT went negative. One ban removes his ace.",
+            "Sejuani ban (CT Blue2) strips Trqnx of his tournament go-to. After this, he must play Kayn (64.3%) or JarvanIV (77.8%) — both untested in tournament for him.",
+            "Veigar ban (CT Blue3) forces Xr17rs to Ryze (50% ranked WR) — a significant power downgrade from his 100% Veigar line.",
+            "Ryze (HS R2) is manageable for Hive's Syndra — Syndra E roots the immobile Ryze and their Q→W→E→R damage trade favors Syndra short-range.",
+            "With Draven + Jinx + Ashe all banned, henry's BOT options collapse to Senna (57.1%), Zeri (60% on 5 games), or Jhin (50%) — none are carry-defining vs Kaisa.",
+            "If HS doesn't ban Twitch (rare), upgrade Kaisa B4 → Twitch immediately. It's Nekter's 82.4% WR ace.",
+            "Win condition: Shyvana secures dragon soul around 20 minutes, Syndra bullies Ryze off waves, Kaisa/Lux outscale Lulu/Senna in lategame teamfights.",
+          ]}
+        />
+
+        <DraftSim
+          title="Scenario B — CT Red Side"
+          ctSide="Red"
+          opponentName="Huskers Scarlet"
+          scenario="Red side counter-pick. CT sees HS's first pick (likely Gnar or Ryze) and locks Shyvana + Syndra as R1-R2. Ban Draven and Sejuani first — the same priority targets — and use red side's counter-pick to answer Xr17rs's mid after seeing his choice."
+          p1Bans={[
+            "Nocturne",  // HS Blue1: Oxy's 78% WR — expected
+            "Draven",    // CT Red1: henry's tournament ace, always first CT ban
+            "Malphite",  // HS Blue2: Ransom's 70% WR — expected
+            "Sejuani",   // CT Red2: Trqnx's tournament primary
+            "Viktor",    // HS Blue3: Hive's signature — expected
+            "Veigar",    // CT Red3: Xr17rs's dominant tournament pick
+          ]}
+          p1Picks={[
+            { champ: "Gnar", role: "TOP" },      // HS B1: TheNeighborsDuck's clear preference
+            { champ: "Shyvana", role: "JGL" },   // CT R1: Oxy 68.8% WR — counter-pick grab
+            { champ: "Syndra", role: "MID" },    // CT R2: Hive 57.4% — locks carry mid before Xr17rs reveals
+            { champ: "Ryze", role: "MID" },      // HS B2: Xr17rs — seeing Syndra, falls to Ryze
+            { champ: "Karma", role: "SUP" },     // HS B3: rapunzelrae establishing support
+            { champ: "Sion", role: "TOP" },      // CT R3: Ransom 75% WR — fronline peel, counters Gnar's flip
+          ]}
+          p2Bans={[
+            "Jinx",       // CT Red1: henry's remaining tournament pick after Draven ban
+            "Twitch",     // HS Blue1: deny Nekter's pocket
+            "Kayn",       // CT Red2: Trqnx's best jungle after Sejuani banned (64.3% WR)
+            "Ashe",       // HS Blue2: deny Nekter's 62.5% flex fallback
+          ]}
+          p2Picks={[
+            { champ: "JarvanIV", role: "JGL" }, // HS R4: Trqnx — best remaining jungle (77.8% ranked WR on 9g)
+            { champ: "Kaisa", role: "BOT" },    // CT B4: Nekter — Twitch/Ashe banned, Kaisa 52.9% flex WR
+            { champ: "Lux", role: "SUP" },      // CT B5: Hond 52.6% WR, root combo into Syndra
+            { champ: "Senna", role: "BOT" },    // HS R5: henry — Draven/Jinx/Twitch all banned, falls to Senna
+          ]}
+          notes={[
+            "Red side counter-pick payoff: CT sees Gnar B1 and locks Shyvana + Syndra at R1-R2. Sion counters Gnar specifically — Sion grey-health absorbs the mega-Gnar flip, and Sion ult disrupts Gnar's teamfight positioning.",
+            "Draven ban on Red side is still first CT ban (Red1) — there is no scenario where Draven stays up.",
+            "Kayn ban (CT Red2) is the key phase 2 move: after Sejuani banned in phase 1, Kayn is Trqnx's 64.3% WR fallback. Remove it and he falls to JarvanIV (77.8% but untested in tournament).",
+            "JarvanIV (HS R4) giving Trqnx his 9-game 77.8% ranked pick is manageable — but this is an untested tournament pick, likely to underperform vs Shyvana's dragon-soul scaling.",
+            "henry's ADC options after Draven + Jinx + Twitch banned: Senna (57.1%), Zeri (60%, 5 games), Jhin (50%). Senna is his deepest BOT pick — doesn't require dive protection from rapunzelrae.",
+            "Kaisa + Lux vs Senna + Karma: Lux E roots Senna (immobile carry), Syndra ult punishes Senna's positioning. The peel matchup favors CT.",
+            "Win condition: Syndra snowballs Ryze in mid, Shyvana secures dragon stacks, Kaisa/Lux outscale Senna/Karma in 5v5.",
+          ]}
+        />
+
+        <DraftSim
+          title="Scenario C — Blue Side, Twitch B1 Race"
+          ctSide="Blue"
+          opponentName="Huskers Scarlet"
+          scenario="henry plays Twitch (62.5% BOT WR) and Nekter plays Twitch (82.4% flex WR). If HS doesn't ban it, CT grabs Twitch at B1 for Nekter before the P2 ban window. This removes henry's shared pocket and gives CT their highest-WR pick in one move."
+          p1Bans={[
+            "Draven",    // CT Blue1: henry's ace — still ban before touching anything else
+            "Nocturne",  // HS Red1: Oxy's 78% WR — expected
+            "Sejuani",   // CT Blue2: Trqnx's tournament staple
+            "Malphite",  // HS Red2: Ransom's 70% WR — expected
+            "Veigar",    // CT Blue3: Xr17rs's dominant tournament mid pick
+            "Viktor",    // HS Red3: Hive's signature — expected
+          ]}
+          p1Picks={[
+            { champ: "Twitch", role: "BOT" },    // CT B1: Nekter's 82.4% flex WR pocket — lock before P2 ban window
+            { champ: "Gnar", role: "TOP" },      // HS R1: TheNeighborsDuck's tournament primary
+            { champ: "Ryze", role: "MID" },      // HS R2: Xr17rs — Veigar banned, falls to tournament pick
+            { champ: "Shyvana", role: "JGL" },   // CT B2: Oxy 68.8% WR — grab after HS reveals their mid
+            { champ: "Sion", role: "TOP" },      // CT B3: Ransom 75% WR — frontline, absorbs Gnar flips
+            { champ: "Karma", role: "SUP" },     // HS R3: rapunzelrae
+          ]}
+          p2Bans={[
+            "Syndra",     // HS Red1: deny Hive's best mid fallback (Xr17rs also has Syndra 71.4% in ranked mid)
+            "Jinx",       // CT Blue1: henry's remaining tournament pick after Draven banned
+            "Ashe",       // HS Red2: deny Nekter's flex fallback
+            "Kayn",       // CT Blue2: Trqnx's 64.3% best jungle after Sejuani banned
+          ]}
+          p2Picks={[
+            { champ: "JarvanIV", role: "JGL" }, // HS R4: Trqnx — best remaining (77.8% ranked WR, untested in tournament)
+            { champ: "Veigar", role: "MID" },   // CT B4: Hive — Syndra banned, Veigar is his 59.4% WR next pick
+            { champ: "Lux", role: "SUP" },      // CT B5: Hond — root synergy with Veigar cage + Twitch passive
+            { champ: "Senna", role: "BOT" },    // HS R5: henry — Draven/Jinx/Twitch/Ashe/Viktor all gone
+          ]}
+          notes={[
+            "Twitch B1 is the payoff when HS doesn't pre-ban it: Nekter's 82.4% flex WR vs henry's 62.5% BOT WR. Giving CT the better player's pick in a race CT wins.",
+            "HS bans Syndra in P2 (targeting Hive after seeing Twitch + Shyvana locked). CT answers with Veigar — Hive's next-best at 59.4% WR on 32 games.",
+            "Veigar cage + Lux root + Twitch passive poison spread is a range-lock combo that executes Senna from distance before she can reposition.",
+            "With Draven + Jinx + Twitch + Ashe all banned, henry's BOT is fully neutralized to Senna (57.1%) or Zeri (60% on 5 games). Neither is a tournament-tested carry.",
+            "JarvanIV (Trqnx, 77.8% on 9 games) is his best remaining jungle. Shyvana counter-scales in dragon fights — Shyvana's passive armor/MR makes JarvanIV's Cataclysm less impactful.",
+            "Sion frontline: Sion ult interrupt disrupts JarvanIV's Cataclysm entry. Sion grey-health absorbs burst from Gnar flip. Strong peel for Twitch scaling.",
+            "Win condition: Twitch reaches two items and poisons the whole team from stealth, Shyvana controls dragon soul, Veigar cage deletes their carry in teamfights.",
+          ]}
+        />
+      </div>
+
+      {/* Summary */}
+      <div style={{ ...S.section, background: "#111827", borderColor: "#1e3a5f" }}>
+        <div style={S.sectionTitle}>Final Recommendations</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
+          {[
+            {
+              label: "Must-Ban",
+              color: "#ef4444",
+              items: [
+                "Draven — henry's 100% ranked WR + tournament ace (10/1/7). Always ban first.",
+                "Sejuani — Trqnx's tournament primary; ban it and his toolkit collapses",
+                "Veigar — Xr17rs's dominant tournament performance (8/2/10); forces him to 50% Ryze",
+              ],
+            },
+            {
+              label: "Strong-Ban",
+              color: "#f59e0b",
+              items: [
+                "Viktor — only if HS doesn't ban it; removes henry's BOT flex + Hive mirror threat",
+                "Karma / Seraphine — rapunzelrae's tournament primaries",
+                "Ashe (mojojoe upgrade) — if sub is announced, prioritize this over Karma",
+              ],
+            },
+            {
+              label: "CT Priority Picks",
+              color: "#22c55e",
+              items: [
+                "Twitch (Nekter 82.4% flex WR) — grab B1 on blue side or ban Draven on red side",
+                "Shyvana (Oxy 68.8%) — grab early, removes Trqnx's secondary option",
+                "Syndra (Hive 57.4%) — primary mid fallback after Viktor ban",
+                "Olaf / Sion (Ransom 75% WR) — both work against Gnar's skirmish style",
+                "Nocturne (Oxy 78.1%) — if HS doesn't ban it, lock it immediately",
+              ],
+            },
+          ].map((col) => (
+            <div key={col.label}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: col.color, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.5px" }}>{col.label}</div>
+              {col.items.map((item, i) => (
+                <div key={i} style={S.bullet}>• {item}</div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Route Entry ──────────────────────────────────────────────────────────────
 
 export default function WriteUp() {
@@ -1656,6 +2422,7 @@ export default function WriteUp() {
 
   if (week === "1") return <Week1 />;
   if (week === "2") return <Week2 />;
+  if (week === "3") return <Week3 />;
 
   return (
     <div style={{ maxWidth: 600, margin: "80px auto", textAlign: "center" }}>

@@ -15,6 +15,13 @@ const WRITE_UPS = [
     subtitle: "Scouting report, ban priorities, and draft simulations",
     date: "Week 2",
   },
+  {
+    week: 3,
+    opponent: "Huskers Scarlet",
+    division: "Lugia Division",
+    subtitle: "Scouting report, tournament intel, ban priorities, and draft simulations",
+    date: "Week 3",
+  },
 ];
 
 export default function WriteUps() {
